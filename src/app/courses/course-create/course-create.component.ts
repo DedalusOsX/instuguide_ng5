@@ -20,7 +20,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
   @Input() public course: CourseRest;
   @Output() public updated = new EventEmitter();
 
-  public courseModel: Course | CourseRest;
+  public courseModel: Course & CourseRest;
 
   public syllabusFileOptions = {
     allowedFileType: ['doc', 'docx', 'pdf', 'xls', 'xlxs', 'ppt', 'pptx'],
@@ -83,7 +83,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
       expecting_grade: 0,
       minimum_pass_grade: 0,
       structure_type: ''
-    };
+    } as Course & CourseRest;
     let offlineCourses;
     if (this.course) {
       for (let key in this.courseModel) {

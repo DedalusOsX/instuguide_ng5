@@ -8,11 +8,9 @@ import { RouterModule } from '@angular/router';
 /**
  * 3rd party modules and components
  */
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChartModule } from 'angular2-highcharts';
 import { FileUploadModule } from 'ng2-file-upload';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
-import { SidebarModule } from 'ng-sidebar';
 // import { CountUpModule } from 'countup.js/countUp.module';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
@@ -55,6 +53,12 @@ import { ErrorCatcherService } from './services/error-catcher.service';
 import { HttpService } from './services/http-interceptor.service';
 import { NotifierService } from './services/notifier.service';
 
+import * as Highcharts from 'highcharts';
+import {Static} from 'highcharts';
+declare function HighchartsMore(H: Static): Static;
+declare function HighchartsExporting(H: Static): Static;
+import * as HighchartsSolidGauge from 'highcharts/modules/solid-gauge';
+
 /**
  * Custom Services
  */
@@ -69,11 +73,10 @@ export function httpServiceFactory(backend: XHRBackend, defaultOptions: RequestO
 }
 
 export function highchartsFactory() {
-  let hc = require('highcharts/highstock');
-  require('highcharts/highcharts-more')(hc);
-  require('highcharts/modules/exporting')(hc);
-  require('highcharts/modules/solid-gauge')(hc);
-  return hc;
+  HighchartsMore(Highcharts);
+  HighchartsExporting(Highcharts);
+  HighchartsSolidGauge(Highcharts);
+  return Highcharts;
 }
 
 @NgModule({
@@ -87,9 +90,7 @@ export function highchartsFactory() {
     HttpClientModule,
     ReactiveFormsModule,
     // CountUpModule,
-    SidebarModule,
     ToastModule.forRoot(),
-    NgbModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -153,7 +154,6 @@ export function highchartsFactory() {
     PipesModule,
     IconPickerDirective,
     ChartModule,
-    NgbModule,
     FormsModule,
     NumberOnlyDirective,
     LimitToDirective,

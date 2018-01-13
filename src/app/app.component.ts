@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { AuthService } from './auth/auth.service';
 import { NotifierService } from './shared/services/notifier.service';
 import { User } from './models/user/user.model';
 import { UserService } from './services/user.service';
@@ -14,6 +13,7 @@ export class AppComponent implements OnInit {
   public user: User;
   public sidebarOpened: boolean;
   public location: string;
+  public busy: boolean;
 
   constructor(private notifierService: NotifierService, private vcr: ViewContainerRef, private router: Router, private userService: UserService) {
     this.notifierService.setViewContainer(vcr);

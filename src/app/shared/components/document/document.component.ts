@@ -10,7 +10,7 @@ export class DocumentComponent {
 
   constructor() {}
 
-  private setIcon(extension: string) {
+  public setIcon(extension: string) {
     switch (extension) {
       case 'doc':
         return '/assets/images/fileicons/word.svg';

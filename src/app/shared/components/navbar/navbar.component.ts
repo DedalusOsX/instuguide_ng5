@@ -10,9 +10,9 @@ import { Router } from '@angular/router';
   templateUrl: 'navbar.component.html',
 })
 export class NavbarComponent implements OnInit {
-
   public courses: any[];
   public currentUser: User = new User();
+  public activeDropdown = false;
 
   @Output() public onItemClick: EventEmitter<any> = new EventEmitter();
 

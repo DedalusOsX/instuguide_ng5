@@ -17,7 +17,6 @@ import { AppState, InternalStateType } from './app.service';
 import { NoContentComponent } from './no-content';
 
 import { Ng2PaginationModule } from 'ng2-pagination';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthModule } from './auth/auth.module';
 import { SharedModule } from './shared/shared.module';
@@ -38,7 +37,6 @@ import { PracticeComponent } from './courses/units/materials/practice/practice.c
 import { StaticPagesComponent } from './staticPages/static.component';
 
 import { NgPipesModule } from 'ngx-pipes';
-import { TimeAgoPipe } from 'time-ago-pipe';
 
 import { appRouting } from './app.routing';
 
@@ -86,7 +84,6 @@ type StoreType = {
     AssignmentComponent,
     PracticeComponent,
     StaticPagesComponent,
-    TimeAgoPipe
   ],
   /**
    * Import Angular's modules.
@@ -100,7 +97,6 @@ type StoreType = {
     Ng2PaginationModule,
     NgPipesModule,
     SharedModule,
-    NgbModule,
     // CountUpModule,
     HttpModule,
     RouterModule.forRoot(ROUTES, {
@@ -125,8 +121,7 @@ type StoreType = {
 })
 export class AppModule {
 
-  constructor(public appRef: ApplicationRef,
-    public appState: AppState) {
+  constructor(public appRef: ApplicationRef, public appState: AppState) {
   }
 
   public hmrOnInit(store: StoreType) {

@@ -88,7 +88,7 @@
 
     <!--  Solutions -->
     <div class="col-4 align-self-start">
-      <h4 class="g-form__head" [ngbTooltip]='"Solutions will be available to your students after you grade them "'>Solutions</h4>
+      <h4 class="g-form__head">Solutions</h4>
       <file-uploader theme='light' [uploadPermission]='true' [files]='assignment.solutions' [options]="uploaderOptionHor" (filesAdded)="assignment.solutions = $event" (filesDeleted)="assignment.deleted_solutions = $event">
       </file-uploader>
     </div>
@@ -175,7 +175,7 @@
       <document theme="horizontal" [document]="item" *ngFor="let item of assignment.media"></document>
     </div>
     <div class="col-12 col-xl-4" *ngIf='assignment.solutions.length && teacher'>
-      <h3 placement="left" [ngbTooltip]='"Solutions will be available to your students after the deadline"'>Solutions</h3>
+      <h3 placement="left">Solutions</h3>
       <document theme="horizontal" [document]="item" *ngFor="let item of assignment.solutions"></document>
     </div>
     <form class="col-12 col-xl-4" *ngIf='assignment.submit_method == "online" && !teacher'>
