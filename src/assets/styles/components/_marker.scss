@@ -1,0 +1,96 @@
+$shadowLayers: (
+    (2, 2, 0, 0, shade($gray), 0.15),
+    (4, 4, 0, 0, shade($gray), 0.2)
+);
+
+.g-marker {
+    @include multilayer-shadow($shadowLayers);
+    border-radius: 5px;
+
+    &__header {
+        @include flexbox(flex-start);
+        @include transition(0.5);
+        position               : relative;
+        height                 : 70px;
+        padding                : 0 43px 0 15px;
+        border-top-left-radius : 5px;
+        border-top-right-radius: 5px;
+        background             : $white;
+
+        > .icon-close {
+            position   : absolute;
+            top        : 18px;
+            right      : 10px;
+            display    : none;
+            width      : 25px;
+            height     : 25px;
+            margin-left: auto;
+            font-size  : 25px;
+
+            @include on-hover() {
+                color: $red;
+            }
+        }
+
+        > .icon-settings {
+            position   : absolute;
+            top        : 23px;
+            right      : 10px;
+            width      : 25px;
+            height     : 25px;
+            margin-left: auto;
+            font-size  : 25px;
+
+            @include on-hover() {
+                @include transform(rotateZ, 360deg, ease-in-out, 0.5);
+            }
+        }
+
+        > h4 {
+            margin-left  : 15px;
+            overflow     : hidden;
+            white-space  : nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+
+    &__body {
+        padding   : 25px 15px;
+        background: $white;
+        text-align: center;
+
+        .g-form__head {
+            text-align: left;
+        }
+
+        button:last-child {
+            margin-top: 15px;
+        }
+    }
+    @include on-active() {
+        .g-marker {
+            &__header {
+                @include transition(0.5);
+                height    : 60px;
+                background: shade($gray);
+                color     : $white;
+
+                > .icon-settings {
+                    display: none;
+                }
+
+                > .icon-close {
+                    display: block;
+                }
+
+                img {
+                    // position: absolute;
+                    // top     : -50px;
+                    // left    : 25px;
+                    height: 100px;
+                    width : 100px;
+                }
+            }
+        }
+    }
+}

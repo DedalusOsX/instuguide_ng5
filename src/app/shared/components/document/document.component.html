@@ -1,0 +1,11 @@
+<img [src]="setIcon(document.extension)">
+<span class='text-left'>
+  <p>{{ document.fileName }}</p>
+  <p>({{ document.size | fileSize }})</p>
+</span>
+<a [href]="document.path" download>
+  <button class="g-tibtn-blue-light__md-default-default--right">
+    <span>Download</span>
+    <i class="icon-download"></i>
+  </button>
+</a>

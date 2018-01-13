@@ -1,0 +1,3 @@
+<!-- BODY-->
+<input type="search" #input (focus)="onFocus.emit()" (input)="onType.emit(input.value)" (blur)="onBlur.emit()" [placeholder]="label"/>
+<i class="icon-search"></i>

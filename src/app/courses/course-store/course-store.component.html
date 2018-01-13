@@ -1,0 +1,46 @@
+<section class="container-fluid p-store">
+
+  <!-- BANNER -->
+  <div class="row p-store__banner g-dark-background">
+    <div class="container">
+      <div class="row">
+        <h1 class="col-6 p-store__banner-title">{{ filterTypes.data[filterTypes.selected].label }}</h1>
+        <div class="col-6 p-store__banner-filters">
+          <ng-container *ngFor="let courseType of filterTypes.data; let last = last; let i = index; trackBy: trackByFn;">
+            <span [class.active]="filterTypes.selected === i" (click)="onSetActiveCourseType(i)">{{ courseType.label }}</span>
+            <span class="separator">{{ last ? '' : '/' }}</span>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COURSES -->
+  <div class="row p-store__main">
+    <div class="container">
+      <div class="row">
+        <div class="col-8">
+          <span>Page:</span>
+          <pagination-controls id='courses_page' previousLabel="" nextLabel="" (pageChange)="filter.page = $event; getCourses()">
+          </pagination-controls>
+        </div>
+        <div class="col-4">
+            <instu-search class="text-right" theme="light" label="Search a course" (onType)='filter.name = $event' (onBlur)="getCourses()"></instu-search>
+        </div>
+      </div>
+      <div class="col-12 p-store__main-course" *ngFor="let course of allCourses | paginate: { id: 'courses_page', itemsPerPage: filter.perPage, currentPage: filter.page, totalItems: totalItems }">
+        <img class='g-img__lg--light' [src]="course.avatar">
+        <div>
+          <h3>{{ course.name }}</h3>
+          <p><b>Course Code:</b> {{course.code}}</p>
+          <p><b>Course Instructor:</b> {{course.created_by.first_name}} {{course.created_by.last_name}}</p>
+          <span><b>Price: {{course.price ? course.price : 'Free'}}</b></span>
+        </div>
+        <div>
+          <button type="button" [routerLink]="['info', course.id]" class="g-btn-green__md-default-default--light">View</button>
+          <button type="button" class="g-btn-blue__md-default-default--light" (click)="bookmarkCourse(course)">{{isBookmarkBelongsUser(course.id) ? 'Unbookmark': 'Bookmark'}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

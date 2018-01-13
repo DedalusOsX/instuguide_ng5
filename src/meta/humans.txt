@@ -1,0 +1,17 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+  Artur Aslanyan -- UI/UX
+  Robert Keyan -- Front-end
+  Nerses Srapionyan -- Back-end
+
+# THANKS
+
+  ARMEN INVISYAN - Positive Mood Dealer
+
+# TECHNOLOGY COLOPHON
+
+  HTML5, SASS3.4
+  Angular4, Node.js, TypeScript, Webpack

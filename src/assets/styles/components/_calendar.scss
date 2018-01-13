@@ -1,0 +1,97 @@
+ical{
+    display: block;
+    .ical-schedule{
+        display: block;
+        &__sidebar {
+            float: left;
+            padding-top: 50px;
+            padding-right: 10px;
+            text-align: right;
+            p{
+                height: 80px;
+            }
+        }
+        &__head{
+            @include flexbox();
+            float: left;
+            width: calc(100% - 80px);
+            padding-top: 30px;
+
+            span{
+                flex-basis: 0;
+                flex-grow: 1;
+                text-align: left;
+            }
+        }
+        &__body{
+            position: relative;
+            @include flexbox();
+            float: left;
+            width: calc(100% - 80px);
+            border: 1px solid tint($gray);
+            margin-top: 3px;
+            &-col {
+                flex-basis: 0;
+                flex-grow: 1;
+            }
+            &-cell{
+                display: block;
+                width: 100%;
+                height: 80px;
+                border: 1px solid tint($gray);
+            }
+        }
+        &__event{
+            @include on-hover{
+                z-index: z-index(absolutef);
+                padding-bottom: 40px;
+                height: auto !important;
+                i{
+                    white-space: pre-wrap;
+                }
+            }
+            position: absolute;
+            z-index: z-index(absolute);
+            left: 0;
+            width: calc(100%/7);
+            padding: 5px;
+            border-left: 2px solid;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            h5{
+                font-weight: 400;
+                color: inherit;
+            }
+            i{
+                font-size: 12px;
+                font-weight: 300;
+                color: inherit;
+                white-space: nowrap;
+                opacity: 0.6;
+            }
+            span{
+                position: absolute;
+                right: 5px;
+                bottom: 5px;
+                font-size: 14px;
+                color: inherit;
+                opacity: 0.6;
+            }
+            @each $colorName,
+            $colorValue in $colors-map {
+                &--#{$colorName} {
+                    @include on-event(){
+                        background: rgba($colorValue, 0.9);
+                        color: $white;
+                        i,span{
+                            opacity: 0.9;
+                        }
+                    };
+                    background: rgba($colorValue,0.2);
+                    border-color: $colorValue;
+                    color: $primary;
+                }
+            }
+        }
+    }
+}

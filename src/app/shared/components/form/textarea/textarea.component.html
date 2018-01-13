@@ -1,0 +1,13 @@
+<!-- BODY-->
+<textarea [formControl]="textarea" (focus)="onFocus.emit()" (input)="onChange(textarea.value)"
+          (blur)="onBlur.emit()" [name]="field" [id]="field"
+          [readonly]="readonly" [ngClass]="{'input-empty': !textarea.value}"></textarea>
+<label [for]="field">{{label}} {{required ? '' : ' (optional)'}}</label>
+
+<!-- FOOTER - ERRORS & HELPERS -->
+<div>
+  <span *ngIf="!error && required && textarea.value">Complete</span>
+  <span *ngIf="!error && required && textarea.dirty && !textarea.value">{{label}} field is required</span>
+  <span class="helpert-right" *ngIf="error">{{error ? error : helper}}</span>
+  <!--<span *ngIf="max">{{input.value ? input.value.length + '/' + max : '0' + '/' + max}}</span>-->
+</div>

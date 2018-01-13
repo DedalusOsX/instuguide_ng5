@@ -1,0 +1,23 @@
+<div class="container-fluid h-100">
+  <div class="row h-100 align-items-center">
+    <div class="col-12 text-center pb-5" *ngIf="error">
+      <i class='icon-Logo' style='font-size: 13em;'></i>
+      <p>{{ error.fullMessage }}</p>
+      <h1 class='mt-4 mb-4'>To transfer to login page</h1>
+      <a href="javascript:;" routerLink="">
+        <button type="button" class="g-btn g-btn-light-green g-btn__md">
+          Click Here
+        </button>
+      </a>
+    </div>
+    <div class="col-12 text-center pb-5" *ngIf="!error">
+      <i class='icon-Logo' style='font-size: 13em;'></i>
+      <h1 class='mt-4 mb-4'>Please wait while you are being redirected, or you can</h1>
+      <a href="javascript:;" routerLink="">
+        <button type="button" class="g-btn g-btn-light-green g-btn__md">
+          Click Here
+        </button>
+      </a>
+    </div>
+  </div>
+</div>

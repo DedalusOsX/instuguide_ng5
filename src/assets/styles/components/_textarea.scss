@@ -1,0 +1,160 @@
+%textarea-placeholder {
+    &-default {
+        position          : absolute;
+        top               : 24px;
+        left              : 16px;
+        z-index           : z-index(absolute);
+        font-size         : 16px;
+        opacity           : 0.5;
+        -webkit-transition: all 0.2s ease-in-out;
+        transition        : all 0.2s ease-in-out;
+        cursor            : pointer;
+    }
+
+    &-active {
+        top               : 10px;
+        height            : 12px;
+        font-size         : 12px;
+        opacity           : 1;
+        line-height       : 1;
+        -webkit-transition: all 0.2s ease-in-out;
+        transition        : all 0.2s ease-in-out;
+    }
+}
+
+instu-textarea {
+    @include on-hover() {
+        > textarea {
+            border-color: $primary;
+        }
+    }
+    position     : relative;
+    display      : block;
+    width: 100%;
+    margin-bottom: 15px;
+    font-family  : $font-roboto;
+    font-size    : 16px;
+    line-height  : 1;
+    text-align   : left;
+
+    label {
+        @extend %textarea-placeholder-default;
+    }
+
+    textarea {
+        //input activation styling
+        @include on-input() {
+            outline     : none;
+            border-color: $green;
+            caret-color : $green;
+
+            ~ label {
+                color: $green;
+                @extend %textarea-placeholder-active;
+            }
+        }
+        resize       : none;
+        display      : inline-block;
+        width        : 100%;
+        height       : 150px;
+        padding      : 24px 16px;
+        border       : 2px solid $gray;
+        border-radius: 5px;
+        background   : transparent;
+
+        //input validations styling
+        &.ng {
+            &-untouched {
+                &.ng {
+                    &-valid {
+                        &:not([ng-reflect-model='']) {
+                            ~ label {
+                                @extend %textarea-placeholder-active;
+                            }
+                        }
+                    }
+
+                    &-invalid {
+                        ~ label {
+                            color: $primary;
+                        }
+
+                        ~ div {
+                            border-color: $gray;
+
+                            span {
+                                color: $primary;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &-touched {
+                &.ng {
+                    &-valid {
+                        &:not([ng-reflect-model='']) {
+                            ~ label {
+                                @extend %textarea-placeholder-active;
+                            }
+                        }
+
+                        ~div {
+                            span {
+                                color: $green;
+                            }
+                        }
+                    }
+
+                    &-invalid {
+                        ~ label {
+                            color: $red;
+                        }
+
+                        ~ div {
+                            border-color: $red;
+
+                            span {
+                                color: $red;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        @include on-hover();
+    }
+
+    > span {
+        opacity    : 0.5;
+        line-height: 2.2;
+
+        &:first-child {
+            margin-right: 4px;
+        }
+    }
+
+    //input error/helper shell styling
+    > div {
+        position   : relative;
+        width      : 100%;
+        height     : 20px;
+        padding-top: 4px;
+
+        //input helper/error styling
+        span {
+            font-size: 12px;
+
+            &.helpert-right {
+                font-weight: 700;
+                float      : right;
+            }
+        }
+    }
+
+    &[highlighted] {
+        background: $gray;
+    }
+
+    &[disabled] {}
+}

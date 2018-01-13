@@ -1,0 +1,22 @@
+<instu-input (onFocus)='initTimepicker()' [label]="label" [readonly]="true" [required]="true" [value]="selected.formattedTime">
+</instu-input>
+
+<div [class.active]="opened">
+  <div>
+    <i class='icon-up' (click)='setValue("hour", true)'></i>
+    <p>{{selected.hour}}</p>
+    <i class='icon-down' (click)='setValue("hour", false)'></i>
+  </div>
+  <span>:</span>
+  <div>
+    <i class='icon-up' (click)='setValue("minute", true)'></i>
+    <p>{{selected.minute}}</p>
+    <i class='icon-down' (click)='setValue("minute", false)'></i>
+  </div>
+  <span>:</span>
+  <div>
+    <i class='icon-up' (click)='setValue("daytime", true)'></i>
+    <p>{{selected.daytime}}</p>
+    <i class='icon-down' (click)='setValue("daytime", false)'></i>
+  </div>
+</div>

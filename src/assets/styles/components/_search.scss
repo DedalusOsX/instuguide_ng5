@@ -1,0 +1,116 @@
+instu-search {
+    position: relative;
+    display: block;
+    padding: 0 15px;
+    input{
+        @include on-input(){
+            width: 100%;
+            + i {
+                left: 34px;
+            }
+        };
+        display: inline-block;
+        width: 220px;
+        padding: 8px 20px 8px 40px;
+        border-radius: 25px;
+        border: 1px solid;
+        text-transform: capitalize;
+        font-size: 13px;
+        font-weight: 300;
+        transition: all 0.4s;
+
+        +i {
+            position: absolute !important;
+            top: 9px;
+        }
+    }
+        &.text-right {
+            i {
+                left: calc(100% - 220px);
+            }
+        }
+
+    &.text-center{
+        i {
+            left: calc((100% - 180px)/2);
+        }
+    }
+    &.text-right {
+        i {
+            left: calc(100% - 220px);
+        }
+    }
+
+    &[theme='dark']{
+        input{
+            @include on-input() {
+                background: $white;
+                border-color: $white;
+                color: $primary;
+                outline: none;
+                &::-webkit-input-placeholder {
+                    color: $primary;
+                }
+                &::-moz-placeholder {
+                    color: $primary;
+                }
+                +i {
+                    color: $primary;
+                }
+            }
+
+            background: shade($gray, 0.3);
+            border-color: shade($gray, 0.3);
+            color: $white;
+
+            &::-webkit-input-placeholder {
+                color: $white;
+            }
+
+            &::-moz-placeholder {
+                color: $white;
+            }
+            + i {
+                color: $white;
+            }
+        }
+    }
+    &[theme='light'] {
+        input {
+            @include on-input() {
+                border-color: $black;
+                color: $primary;
+                outline: none;
+                &::-webkit-input-placeholder {
+                    color: $primary;
+                    opacity: 1;
+                }
+                &::-moz-placeholder {
+                    color: $primary;
+                    opacity: 1;
+                }
+                +i {
+                    color: $primary;
+                    opacity: 1;
+                }
+            }
+
+            background: $white;
+            border-color: $primary;
+            color: $primary;
+
+            &::-webkit-input-placeholder {
+                color: $primary;
+                opacity: 0.5;
+            }
+            &::-moz-placeholder {
+                color: $primary;
+                opacity: 0.5;
+            }
+            +i {
+                color: $primary;
+                opacity: 0.5;
+            }
+        }
+    }
+}

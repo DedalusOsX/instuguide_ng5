@@ -1,0 +1,37 @@
+.g-grades {
+    &__block--arrow {
+        @include flexbox();
+
+        text-align: center;
+
+        i {
+            width        : 30px;
+            height       : 30px;
+            border       : 1px solid $primary;
+            border-radius: 50%;
+
+            &:before {
+                top: 6px;
+                @include when-inside('.icon-left') {
+                    left: 4px;
+                };
+                @include when-inside('.icon-right') {
+                    left: 7px;
+                };
+            }
+            @include on-hover();
+        }
+    }
+}
+
+.b-course__grades_filter_legends {
+    height: 90px;
+
+    .b-course__grades_filter_legends--item {
+        height: 30px;
+
+        label {
+            font-weight: 300;
+        }
+    }
+}

@@ -1,0 +1,52 @@
+instu-dropdown {
+    @extend %flexbox;
+
+    position: relative;
+    width   : 100%;
+
+    input {
+        text-transform: capitalize;
+    }
+
+    .icon-down {
+        display: inline-block !important;
+    }
+
+    ul {
+        position  : absolute;
+        top       : 32px;
+        left      : 0;
+        height    : 0;
+        width     : 100%;
+        overflow  : scroll;
+        background: $white;
+        z-index   : z-index(absolutef);
+        overflow-x: hidden;
+        @include transition();
+
+        @include on-input() {
+            height    : auto;
+            min-height: 64px;
+            max-height: 256px;
+            padding   : 8px 0;
+            @include transition();
+            @include shadow();
+        }
+
+        li {
+            height        : 48px;
+            padding       : 0 16px;
+            color         : $primary;
+            text-align    : left;
+            text-transform: capitalize;
+            text-overflow : ellipsis;
+            overflow      : hidden;
+            white-space   : nowrap;
+            list-style    : none;
+            line-height   : 3;
+            @include on-hover() {
+                background-color: tint($gray, 0.8);
+            }
+        }
+    }
+}

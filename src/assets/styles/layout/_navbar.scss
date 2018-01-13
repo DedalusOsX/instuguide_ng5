@@ -1,0 +1,118 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the navbar of the site/application.
+// -----------------------------------------------------------------------------
+
+.nav {
+    position: fixed;
+    top     : 0;
+    left    : 0;
+    height  : 60px;
+    z-index : z-index(navbar);
+    background: shade($gray);
+    color: $white;
+    @include shadow(0, 2, 2, 1);
+    @include flexbox();
+
+    &-menu__item {
+        @include on-hover() {
+            background: shade($black, 0.1);
+            outline: none;
+        }
+        float     : left;
+        height    : 60px;
+        width     : 100px;
+        padding   : 8px 10px;
+        color     : inherit;
+        text-align: center;
+
+        i {
+            width    : 20px;
+            height   : 20px;
+            font-size: 20px;
+            color: inherit;
+        }
+
+        p {
+            margin-top: 10px;
+            font-size : 14px;
+            color: inherit;
+        }
+    }
+
+    &-logo {
+        color: $white;
+    }
+
+    &-account {
+        @include on-hover() {
+            background: shade($black, 0.1);
+        }
+        position : relative;
+        height: 60px;
+        width    : 100%;
+        max-width: 250px;
+        padding  : 15px;
+        float    : right;
+
+        img {
+            float       : left;
+            margin-right: 10px;
+        }
+
+        img + div {
+            float: left;
+            width  : calc(100% - 99px);
+        }
+
+        p {
+            white-space  : nowrap;
+            overflow     : hidden;
+            text-overflow: ellipsis;
+            font-weight  : 300;
+            color: $white;
+        }
+
+        h6 {
+            font-weight: 300;
+            color: shade($white, 0.3);
+        }
+
+        i {
+            height: 14px;
+            width : 14px;
+            margin: 11px 10px 11px 0;
+            float : right;
+            color: $white;
+        }
+
+        &__dropdown {
+            position  : fixed;
+            z-index: z-index(navbar);
+            top       : 60px;
+            right     : 30px;
+            height    : 0;
+            width     : 250px;
+            overflow  : hidden;
+            background: shade($gray);
+            &.active{
+                height: 100px;
+                padding: 10px 0;
+                @include shadow(0, 2, 2, 1);
+                @include transition();
+            }
+            a {
+                @include on-hover() {
+                    background: shade($black, 0.1);
+                }
+                display   : block;
+                padding   : 10px;
+                color     : $white;
+                text-align: right;
+            }
+            @include transition();
+        }
+    }
+
+    @extend .container-fluid;
+    @include transition();
+}

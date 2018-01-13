@@ -1,0 +1,5 @@
+<div class="g-tile__item" [class.active]='activeTile === i' *ngFor='let tile of tiles, let i = index' (click)='setActive(i)'>
+  <img [src]="tile.icon">
+  <span *ngIf="tile.notification">{{ tile.notification }}</span>
+  <p>{{ tile.label }}</p>
+</div>

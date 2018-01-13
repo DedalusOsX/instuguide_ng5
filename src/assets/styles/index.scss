@@ -1,0 +1,71 @@
+@charset "UTF-8";
+// 1. Configuration and helpers
+@import "abstracts/variables";
+@import "abstracts/functions";
+@import "abstracts/placeholders";
+@import "abstracts/mixins";
+
+// 2. Vendors
+@import "vendor/bootstrap/bootstrap-grid";
+@import "vendor/customHighcharts";
+@import "vendor/normalize";
+@import "vendor/toastr";
+
+// 3. Base stuff
+@import "base/animations";
+@import "base/colors";
+@import "base/fonts";
+@import "base/helpers";
+@import "base/icons";
+@import "base/media-query";
+@import "base/reset";
+@import "base/shame";
+@import "base/typography";
+
+// 4. Components
+@import "components/form";
+@import "components/input";
+@import "components/meta";
+@import "components/search";
+@import "components/list";
+@import "components/card";
+@import "components/marker";
+@import "components/textarea";
+@import "components/document";
+@import "components/dropdown";
+@import "components/datepicker";
+@import "components/timepicker";
+@import "components/calendar";
+@import "components/checkbox";
+@import "components/button";
+@import "components/alert";
+@import "components/grades";
+@import "components/pagination";
+@import "components/tiles";
+@import "components/images";
+@import "components/thumbnails";
+@import "components/fileUploader";
+@import "components/imageUploader";
+
+// 5. Layout-related sections
+@import "layout/unit-grid/unit-grid";
+@import "layout/announcement";
+@import "layout/footer";
+@import "layout/grid";
+@import "layout/banner";
+@import "layout/navbar";
+@import "layout/sidebar";
+
+// 6. Page-specific styles
+@import "pages/auth";
+@import "pages/course-create";
+@import "pages/course-info";
+@import "pages/course-material";
+@import "pages/course-store";
+@import "pages/dashboard";
+@import "pages/profile";
+
+// 7. Themes
+@import "themes/default";
+@import "themes/theme-dark";
+@import "themes/theme-light";

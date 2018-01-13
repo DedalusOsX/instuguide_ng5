@@ -1,0 +1,35 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass variables.
+// -----------------------------------------------------------------------------
+
+%flexbox {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+%custom-scroll {
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0);
+  }
+  &::-webkit-scrollbar-thumb {
+  }
+  &::-webkit-scrollbar-button:start:decrement {
+    display: none;
+  }
+  &::-webkit-scrollbar-button:end:increment {
+    display: none
+  }
+}
+
+%disable-pointer {
+  pointer-events: none;
+  user-focus: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: not-allowed;
+}

@@ -1,0 +1,156 @@
+<form class="container-fluid p-course-create" novalidate #courseForm="ngForm">
+
+  <!-- BANNER -->
+  <div class="row g-banner__course" id='js-background-preview'>
+    <image-uploader view="circle" theme='dark' field='avatar' label="Avatar" [options]="avatarUploaderOptions" (fileUpdated)="avatar = $event"></image-uploader>
+    <div class="g-banner__course__footer-title">
+      <h2>{{courseModel.name || 'New Course'}}</h2>
+      <h3>Course Code: {{courseModel.code || 'Not Generated Yet'}}</h3>
+    </div>
+  </div>
+
+  <!-- GENERAL QUESTIONS -->
+  <div class="row g-semi-background">
+    <div class="container">
+      <div class="row">
+        <h3 class='col-12'>General Information</h3>
+        <div class="col-4">
+          <instu-input (onType)='courseModel.name = $event' label="Course Name" type="text" [required]="true"></instu-input>
+        </div>
+        <div class="col-4" *ngIf="!courseModel.id">
+          <instu-dropdown *ngIf='courseCategories.length' [default]='false' [data]="courseCategories" propLabel="name" propValue="code" (valueUpdated)="courseModel.category = $event" label="Course Subject" helperText="Pick one course category"></instu-dropdown>
+        </div>
+        <div class="col-4">
+          <instu-dropdown [default]='false' [data]="courseStructures" (valueUpdated)="courseModel.structure_type = $event" label="Course Structure" helperText="Pick one course structure"></instu-dropdown>
+        </div>
+        <div class="col-12">
+          <instu-textarea (onType)='courseModel.description = $event' label="Course Description" type="text" [required]="true"></instu-textarea>
+        </div>
+        <div class="col-4 p-course-create__materials">
+          <i class='icon-books'></i>
+          <p>Books</p>
+          <instu-list [data]="books" label="Book" field="books" helperText="Max 100 Characters" (valueUpdated)="books = $event"></instu-list>
+        </div>
+        <div class="col-4 p-course-create__materials">
+          <i class='icon-syllabus'></i>
+          <p>Syllabus</p>
+          <file-uploader [files]="courseModel.syllabus" [uploadPermission]='true' theme="light" alignmnet="vertical" [options]="syllabusFileOptions" (filesAdded)="syllabus = $event" (filesDeleted)="deleted_syllabus = $event">
+          </file-uploader>
+        </div>
+        <div class="col-4 p-course-create__materials">
+          <i class='icon-skills'></i>
+          <p>Skills to be Acquired</p>
+          <instu-list [data]="skills" label="Skill" field="skills" helperText="Max 100 Characters" (valueUpdated)="skills = $event">
+          </instu-list>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COURSE STRUCTURE -->
+  <div class="row g-light-background" *ngIf="!courseModel.id">
+    <div class="container">
+      <div class="row">
+        <h3 class="col-12">Course Structure</h3>
+        <p class='col-12'>Here you define what sections does your {{ courseModel.structure === 'weeks' ? 'week': 'unit'}}s can potentially consist of and how they should be named.
+          <br> *NOTE: this doesn't mean that every {{ courseModel.structure === 'weeks' ? 'week': 'unit'}} has to consist of all of these.</p>
+
+        <p class="col-3">Material Types:*</p>
+        <div class="col-3">
+          <div class="g-radio__circle--light" *ngFor="let material of availableUnitMaterials.material_types">
+            <input [id]='material.field' name='material_types' type="radio" [value]="material.field" [checked]="unit_available_types.material_types.includes(material.field)" (change)='onSelectedMaterialType($event, material)'>
+            <label [for]='material.field'>{{material.label}}</label>
+          </div>
+        </div>
+
+
+        <!-- <p class="col-3">Practice Types:</p>
+          <div class="col-3">
+            <div *ngFor="let material of availableUnitMaterials.practice_types" class="g-radio">
+              <input [id]="material.field" name='practice_types' type="radio" [value]="material.field" (change)='onSelectedMaterialType($event, material)'>
+              <label [for]='material.field'>{{material.label}}</label>
+            </div>
+          </div> -->
+
+        <p class="col-3">Activity Types:</p>
+        <div class="col-3">
+          <div class="g-checkbox__square--light" *ngFor="let material of availableUnitMaterials.activity_types">
+            <input [id]='material.field' name="activity_types" type="checkbox" [value]="material.field" (change)='onSelectedMaterialType($event, material)'>
+            <label [for]='material.field'>{{ material.label }}</label>
+          </div>
+        </div>
+
+        <p class="col-3 mt-3">Test Types:</p>
+        <div class="col-3 mt-3">
+          <div class="g-checkbox__square--light" *ngFor="let material of availableUnitMaterials.test_types">
+            <input [id]='material.field' name="test_types" type="checkbox" [value]="material.field" (change)='onSelectedMaterialType($event, material)'>
+            <label [for]='material.field'>{{ material.label }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row g-semi-background">
+    <div class="container">
+      <div class="row">
+        <!-- DATES -->
+        <h3 class="col-12">Dates</h3>
+        <div class="col-4">
+          <datepicker [model]='courseModel.start_date' (updatedValue)="onSelectedStartDate($event)" label="Course Start Date" helperText="Select a start date" field="start_date">
+          </datepicker>
+        </div>
+        <div class="col-4">
+          <datepicker [model]='courseModel.end_date' (updatedValue)="courseModel.end_date = $event" [options]="tinyDatepickerOpt" label="Course End Date" helperText="Select an end date" field="end_date">
+          </datepicker>
+        </div>
+        <div class="col-4">
+          <instu-dropdown [default]='false' [data]="courseTypes" (valueUpdated)="selectType($event)" label="Course Type" helperText="Pick between online and offline"></instu-dropdown>
+        </div>
+      </div>
+      <!-- COURSE SCHEDULE -->
+      <div class="row" *ngIf='courseModel.type == "offline"'>
+        <h3 class="col-12">Schedule</h3>
+        <p class='col-12'>Here you can manage the weekly schedule of you course.<br> Add lectures and/or other events that are applicable to your course. This will help your students to better plan out their weekly activities.</p>
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+          <div class="g-card">
+            <button class="g-btn-green__sm-default-default--light" type='button' (click)="offlineCourses.add()">Add New Event</button>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mb-4" *ngFor="let schedule of offlineCourses.courses; let i = index; trackBy: trackByFn">
+          <div class="g-card">
+            <instu-dropdown [default]='false' [data]="eventTypes" (valueUpdated)="onSetScheduleType(i, $event)" label="Event Type" helperText="Pick an event type"></instu-dropdown>
+            <instu-dropdown [default]='false' [data]="weekDays" (valueUpdated)="schedule.weekDay = $event" label="Week Day" helperText="Pick a week day"></instu-dropdown>
+            <div class="g-input-group">
+              <i class="icon-clock"></i>
+              <timepicker (valueUpdated)="schedule.startTime = $event; onStartTimeSelected(i, $event)" label="Start Time" [value]="schedule.startTime" helperText="Pick a start time"></timepicker>
+            </div>
+            <div class="g-input-group">
+              <i class="icon-clock"></i>
+              <timepicker (valueUpdated)="schedule.endTime = $event" label="End Time" [value]="schedule.endTime" helperText="Pick a end time"></timepicker>
+            </div>
+            <instu-input (onType)='schedule.location = $event' label="Event Location" type="text" [required]="true"></instu-input>
+            <button class="g-btn-red__sm-default-default--light" (click)="offlineCourses.remove(i)" [disabled]="!i">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- GRADES -->
+  <div class='row pt-5 g-light-background'>
+    <div class="container text-center">
+      <div class="row">
+        <h3 class='col-12'>Grading</h3>
+        <div class="col-6">
+          <instu-input numberOnly (onType)='courseModel.minimum_pass_grade = $event' max="100" label="Minimum pass grade" type="number" [required]="true"></instu-input>
+        </div>
+        <div class="col-6">
+          <instu-input numberOnly (onType)='courseModel.expecting_grade' max="100" label="Recommended grade" [required]="true"></instu-input>
+        </div>
+      </div>
+      <pie-grades class='row' *ngIf="!courseModel.id" title="Course Grade Distribution" colorScheme="light" [gradeWeights]="gradeWeights" (valueUpdated)="gradeWeights = $event"></pie-grades>
+      <button type='button' (click)="submitCourse($event, courseForm)" class="g-btn-green__md-default-default--light">{{courseModel.id ? 'Update' : 'Submit'}}</button>
+    </div>
+  </div>
+</form>

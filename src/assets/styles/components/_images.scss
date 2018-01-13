@@ -1,0 +1,27 @@
+$img-sizes: (
+    xs: 35px,
+    sm: 50px,
+    md: 80px,
+    lg: 125px,
+    xl: 150px
+);
+
+@each $name, $value in $img-sizes {
+    .g-img__#{$name}--light {
+        display      : inline-block;
+        width        : $value;
+        height       : $value;
+        border       : 1px solid tint($gray,0.7);
+        border-radius: 50%;
+        background   : $gray;
+    }
+
+    .g-img__#{$name}--dark {
+        display: inline-block;
+        width  : $value;
+        height : $value;
+        border : none;
+        border-radius: 50%;
+        background: $gray;
+    }
+}

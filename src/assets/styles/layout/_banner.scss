@@ -1,0 +1,56 @@
+//Banner
+
+%g-banner {
+    position             : relative;
+    min-height           : 540px;
+    background-attachment: fixed;
+    background-size      : cover;
+    background-position  : center;
+    background-repeat    : no-repeat;
+    color                : $white;
+    @extend .g-dark-background;
+    @extend .g-theme-dark;
+}
+
+.g-banner__course {
+    @include flexbox(center, center, column);
+    @extend %g-banner;
+    padding              : 60px 0;
+    background-color     : rgba($black, 0.5);
+    background-blend-mode: overlay;
+    text-align           : center;
+
+    a {
+        color: $white;
+    }
+
+    &__footer-title {
+        position  : absolute;
+        z-index   : z-index(absolute);
+        left      : 0;
+        right     : 0;
+        bottom    : 10px;
+        width     : 100%;
+        text-align: center;
+        color     : $white;
+
+        h3 {
+            font-weight: 300;
+        }
+    }
+}
+
+.g-banner__profile {
+    @include flexbox(center, center, column);
+    @extend %g-banner;
+    padding              : 60px 0;
+    background-color     : rgba($black, 0.8);
+    background-blend-mode: overlay;
+    text-align           : center;
+
+    h2,
+    img,
+    p {
+        margin-bottom: 15px;
+    }
+}

@@ -1,0 +1,235 @@
+<!-- NAVIGATION -->
+<div class="g-app-grid__body-view">
+  <ng-container *ngIf='assignment.id && teacher'>
+    <button [class.active]="view.mode === 'view'" class="g-btn-blue__sm-thick-square--hollow" type="button" (click)='view.mode = "view"'>Preview</button>
+    <button [class.active]="view.mode === 'edit'" class="g-btn-red__sm-thick-square--hollow" type="button" (click)='view.mode = "edit"'>Edit</button>
+    <button [class.active]="view.mode === 'grade'" class="g-btn-green__sm-thick-square--hollow" type="button" (click)='view.mode = "grade"'>Grade</button>
+  </ng-container>
+  <ng-container *ngIf='answer.grade && !teacher'>
+    <button [class.active]="view.mode === 'view'" class="g-btn-blue__sm-thick-square--hollow" type="button" (click)='view.mode = "view"'>Preview</button>
+    <button [class.active]="view.mode === 'grade'" class="g-btn-green__sm-thick-square--hollow" type="button" (click)='view.mode = "feedback"'>Grade</button>
+  </ng-container>
+</div>
+
+<!--  CREATE/EDIT -->
+<form class="container" *ngIf='!assignment.id || view.mode === "edit"'>
+  <div class="row">
+    <h3 class='col'>{{assignment.id ? assignment.type + ' ' + assignment.index : 'New ' + assignment.type}}</h3>
+    <div class="col-auto b-assignment__status" (click)='assignment.status = "unlocked"'>
+      <button [class.active]="assignment.status === 'unlocked'" type="button" class="g-ibtn-green__md--light">
+        <i class='icon-unlocked'></i>
+      </button>
+      <p>Unlock</p>
+    </div>
+    <div class="col-auto b-assignment__status" (click)='assignment.status = "locked"'>
+      <button [class.active]="assignment.status === 'locked'" type="button" class="g-ibtn-locked__md--light">
+        <i class='icon-locked'></i>
+      </button>
+      <p>Lock</p>
+    </div>
+    <div class="w-100"></div>
+
+    <!--  General Information -->
+    <div class="col-4">
+      <h4 class="g-form__head">Submit</h4>
+      <div class="g-radio__circle--light">
+        <input id='online' name='material_types' type="radio" value="online" [checked]="assignment.submit_method === 'online'" (change)='assignment.submit_method = "online"'>
+        <label for='online'>Online</label>
+      </div>
+      <div class="g-radio__circle--light">
+        <input id='offline' name='material_types' type="radio" value="offline" [checked]="assignment.submit_method === 'offline'" (change)='assignment.submit_method = "offline"'>
+        <label for='offline'>In Class</label>
+      </div>
+    </div>
+    <div class="col-8">
+      <h4 class="g-form__head">{{assignment.type === 'assignment' ? 'Deadline': 'Date'}}</h4>
+      <div class="row">
+        <div class="col">
+          <datepicker [model]='assignment.end_date' (updatedValue)="assignment.end_date = $event" [options]="datepickerOpt" [label]="assignment.type === 'assignment' ? 'Deadline: Date*' : ((assignment.type | translate) + ' Date')" helperText="Select a date" field="start_date">
+          </datepicker>
+        </div>
+        <div class="col" *ngIf="assignment.type != 'assignment'">
+          <timepicker (valueUpdated)="assignment.start_time = $event" label="Start Time:*" helperText="Pick a time" [value]="assignment.start_time">
+          </timepicker>
+        </div>
+        <div class="col">
+          <timepicker (valueUpdated)="assignment.end_time = $event" label="End Time:*" helperText="Pick a time" [value]="assignment.end_time">
+          </timepicker>
+        </div>
+      </div>
+    </div>
+    <!--  Grade Weight -->
+    <div class="col-12">
+      <h4 class="g-form__head">Grade Weight</h4>
+    </div>
+    <div class="col-4 g-input-group">
+      <i class="icon-weight"></i>
+      <instu-input numberOnly [readonly]="assignment.id" [value]="assignment.weight" (onType)='tempAssignmentWeight = $event; updateAssignmentWeight()' [max]="availableWeight" label="Assignment weight" type="number" required="true">
+      </instu-input>
+    </div>
+    <div class="col-8 g-grade-bar">
+      <div class="row">
+        <chart [options]="gradeWeightsChartOptions" (load)="saveChartInstance($event.context)"></chart>
+      </div>
+    </div>
+
+    <!--  Notes -->
+    <div class="col-4">
+      <h4 class="g-form__head">Notes</h4>
+      <instu-textarea [value]="assignment.note" (onType)='assignment.note = $event' label="Max 1000 characters" type="text"></instu-textarea>
+    </div>
+
+    <!--  Materials -->
+    <div class="col-4 align-self-start">
+      <h4 class="g-form__head">Materials</h4>
+      <file-uploader theme='light' [uploadPermission]='true' [files]='assignment.media' [options]="uploaderOptionHor" (filesAdded)="assignment.media = $event" (filesDeleted)="assignment.deleted_media = $event">
+      </file-uploader>
+    </div>
+
+    <!--  Solutions -->
+    <div class="col-4 align-self-start">
+      <h4 class="g-form__head" [ngbTooltip]='"Solutions will be available to your students after you grade them "'>Solutions</h4>
+      <file-uploader theme='light' [uploadPermission]='true' [files]='assignment.solutions' [options]="uploaderOptionHor" (filesAdded)="assignment.solutions = $event" (filesDeleted)="assignment.deleted_solutions = $event">
+      </file-uploader>
+    </div>
+    <div class="col-12 text-right mt-5">
+      <button class="g-btn-green__md-default-default--light" (click)="submitAssignment()">{{assignment.id ? 'Update': 'Submit'}}</button>
+    </div>
+  </div>
+</form>
+
+<!--   GRADE  -->
+<div class="container" *ngIf="view.mode === 'grade'">
+  <div class='row b-assignment__grade-titles'>
+    <h3 class='col'>Grades ({{ assignment.submit_method === 'online' ? 'submitted: ' + submitCount + '/' + studentList.length + ', ': ''}}graded: {{gradeCount}}/{{studentList.length}})</h3>
+    <div class="col-3">
+      <instu-dropdown [default]='true' [data]="filterStudent" (valueUpdated)="filter($event)" label="Filter Range"></instu-dropdown>
+    </div>
+    <div class="w-100"></div>
+    <div class="col-6 col-xl-4 mb-5 b-assignment__grade-student" *ngFor='let student of studentList; let i = index; trackBy: trackByFn;'>
+      <div class="g-marker" [class.active]="view.grade === i">
+        <div class="g-marker__header">
+          <img class='g-img__sm--light' [src]="student.avatar">
+          <h4>{{student.first_name + ' ' + student.last_name}}</h4>
+          <i class="icon-close" (click)="view.grade = null"></i>
+          <i class="icon-settings" (click)="view.grade = i"></i>
+        </div>
+
+        <div class="g-marker__body" *ngIf="view.grade === i">
+          <ng-container *ngIf="assignment.submit_method === 'online'">
+            <h4 class="g-form__head">{{student.first_name}}'s solutions</h4>
+            <p class="mv-4" *ngIf="!student.answer.content.length">Didn't submit anything yet!</p>
+            <document theme="horizontal" [document]="doc" *ngFor="let doc of student.answer.content"></document>
+          </ng-container>
+          <h4 class="g-form__head">Grade</h4>
+          <instu-input numberOnly (onType)='gradeModel.grade = $event' [value]="gradeModel.grade" max="100" type="number" [label]="'Grade'" [required]="true"></instu-input>
+          <instu-textarea (onType)='gradeModel.feedback = $event' [value]="gradeModel.feedback" [label]="'Feedback'" required="true"></instu-textarea>
+          <h4 class="g-form__head">Reviewed {{(assignment.type | translate)}}</h4>
+          <file-uploader theme='light' [uploadPermission]='true' [files]='gradeModel.reviewed' [options]="uploaderOptionHor" (filesAdded)="gradeModel.reviewed = $event" (filesDeleted)="gradeModel.deleted_reviewed = $event">
+          </file-uploader>
+          <button class="g-btn-green__sm-default-default--light" type="button" (click)="submitGrade(student)" [disabled]="!gradeModel.grade || !gradeModel.feedback">Submit</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- VIEW -->
+<div class="container" *ngIf="assignment.id && view.mode === 'view'">
+  <div class='row b-assignment__view-titles'>
+    <h3 class='col-8'>{{(assignment.type | translate)}} {{assignment.index}}: Information</h3>
+    <div class="col-4" *ngIf="teacher">
+      <i [ngClass]="'g-status-' + assignment.status + '__md'"></i>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6 col-xl-4">
+      <div class="g-meta">
+        <i class="icon-weight"></i>
+        <p>Grade Weight:</p>
+        <span>{{assignment.weight}}%</span>
+      </div>
+    </div>
+    <div class="col-6 col-xl-4">
+      <div class="g-meta">
+        <i class='icon-calendar'></i>
+        <p>{{assignment.type === 'assignment' ? 'Deadline:' : 'Date:'}}</p>
+        <span *ngIf="assignment.type !== 'assignment'">{{assignment.start_date | date:'MMM d, h:mm a'}} - {{assignment.end_date | date: 'jm'}}</span>
+        <span *ngIf="assignment.type === 'assignment'">{{assignment.end_date | date:'MMM d, h:mm a'}}</span>
+      </div>
+    </div>
+    <div class="col-6 col-xl-4">
+      <div class="g-meta">
+        <i [ngClass]="'g-status-' + assignmentStatus + '__md'"></i>
+        <p>Status:</p>
+        <span>{{ assignmentStatus }}</span>
+      </div>
+    </div>
+    <div class="col-6 col-xl-4" *ngIf="assignment.note.length">
+      <h3>Notes</h3>
+      <p>{{assignment.note}}</p>
+    </div>
+    <div class="col-6 col-xl-4" *ngIf='assignment.media.length'>
+      <h3>Materials</h3>
+      <document theme="horizontal" [document]="item" *ngFor="let item of assignment.media"></document>
+    </div>
+    <div class="col-12 col-xl-4" *ngIf='assignment.solutions.length && teacher'>
+      <h3 placement="left" [ngbTooltip]='"Solutions will be available to your students after the deadline"'>Solutions</h3>
+      <document theme="horizontal" [document]="item" *ngFor="let item of assignment.solutions"></document>
+    </div>
+    <form class="col-12 col-xl-4" *ngIf='assignment.submit_method == "online" && !teacher'>
+      <h3>Submit {{ assignment.label }}</h3>
+      <file-uploader theme='light' field='content' [files]='answer.content' [options]="uploaderOptionHor" [uploadPermission]='checkUploadPermission(answer, assignment.end_date)' (filesAdded)="answer.content = $event" (filesDeleted)="answer.deleted_content = $event">
+      </file-uploader>
+      <button class='g-btn-green__md-default-default--light' *ngIf='checkUploadPermission(answer, assignment.end_date)' (click)="submitAnswer()">{{ answer.id === 1 ? 'Update' : 'Submit'}}</button>
+    </form>
+  </div>
+</div>
+
+<!--  FEEDBACK -->
+<div class="container" *ngIf="view.mode === 'feedback'">
+  <div class="row">
+    <h3 class='col-12'>Feedback &amp; Grade</h3>
+    <div class="col-6 col-xl-4">
+      <div class="g-instu-info-container-light no-gutters">
+        <div class="col-3 text-left">
+          <img class="g-img-circular-md" [src]="answer.teacher_id.avatar">
+        </div>
+        <p class='col'>
+          <b>{{answer.teacher_id.first_name}} {{answer.teacher_id.last_name}}</b>
+          <small>Feedback</small>
+        </p>
+      </div>
+    </div>
+    <div class="col-6 col-xl-4">
+      <div class="g-instu-info-container-light">
+        <i class='icon-Brain'></i>
+        <p>Your Grade:</p>
+        <b>{{answer.grade}}%</b>
+      </div>
+    </div>
+    <div class="col-6 col-xl-4">
+      <div class="g-instu-info-container-light">
+        <i class='icon-GPA'></i>
+        <p>Effect on GPA:</p>
+        <b [ngClass]="{'red-text': answer.gpa_delta < 0,'green-text': answer.gpa_delta > 0}">{{answer.gpa_delta | number : '1.1-1'}} ({{answer.grade}}%)</b>
+      </div>
+    </div>
+    <div class="col-6 col-xl-4">
+      <span>{{answer.feedback}}</span>
+    </div>
+    <div class="col-6" *ngIf='assignment.solutions.length'>
+      <div class="row">
+        <h3 class='col-12'>Solutions</h3>
+        <document class="col-12" theme="horizontal" [document]="item" *ngFor="let item of assignment.solutions"></document>
+      </div>
+    </div>
+    <div class="col-6" *ngIf='answer.reviewed.length'>
+      <div class="row">
+        <h3 class='col-12'>Reviewed {{ (assignment.type | translate) }}</h3>
+        <document class="col-12" theme="horizontal" [document]="item" *ngFor="let item of answer.reviewed"></document>
+      </div>
+    </div>
+  </div>
+</div>

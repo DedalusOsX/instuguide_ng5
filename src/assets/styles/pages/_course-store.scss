@@ -1,0 +1,58 @@
+// -----------------------------------------------------------------------------
+// This file contains styles that are specific to the profile page.
+// -----------------------------------------------------------------------------
+
+.p-store {
+    &__banner{
+        height: 300px;
+        align-items: flex-end;
+        .row {
+            align-items: flex-end;
+        }
+        &-title{
+            margin-bottom: 30px;
+        }
+        &-filters{
+            margin-bottom: 30px;
+            text-align: right;
+            font-weight: 300;
+            span{
+                @include on-event(){
+                    opacity: 1;
+                }
+                opacity: 0.5;
+            }
+        }
+    }
+    &__main{
+        padding: 40px 0;
+        &-course{
+            @include flexbox();
+            margin: 20px 0;
+            img {
+                margin-right: 15px;
+            }
+            >div{
+                color: $primary;
+                &:nth-child(2){
+                    margin-right: auto;
+                    text-align: left;
+                    font-weight: 300;
+                    p{
+                        margin: 5px 0;
+                    }
+                    span {
+                        margin: 10px 0;
+                        color: $blue-light;
+                    }
+                }
+                &:nth-child(3) {
+                    button{
+                        display: block;
+                        margin: 10px 0;
+                    }
+                }
+            }
+        }
+    }
+}

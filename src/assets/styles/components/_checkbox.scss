@@ -1,0 +1,172 @@
+%g-checkbox {
+    padding-left : 20px;
+    margin-bottom: 5px;
+
+    label {
+        display       : inline-block;
+        vertical-align: middle;
+        position      : relative;
+        padding-left  : 5px;
+        cursor        : pointer;
+        user-select   : none;
+        line-height   : 1.6;
+
+        &::before {
+            content           : "";
+            display           : inline-block;
+            position          : absolute;
+            width             : 20px;
+            height            : 20px;
+            left              : 0;
+            top               : 2px;
+            margin-left       : -20px;
+            border            : 2px solid;
+            -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+            -o-transition     : border 0.15s ease-in-out, color 0.15s ease-in-out;
+            transition        : border 0.15s ease-in-out, color 0.15s ease-in-out;
+        }
+
+        &::after {
+            display    : inline-block;
+            position   : absolute;
+            width      : 20px;
+            left       : 0;
+            top        : 2px;
+            text-align : center;
+            line-height: 2;
+            height     : 20px;
+            border     : none;
+            margin-left: -20px;
+            font-size  : 11px;
+        }
+    }
+
+    input {
+        opacity: 0;
+        z-index: 1;
+        cursor : pointer;
+
+        &:indeterminate + label::after {
+            display         : block;
+            content         : "";
+            width           : 10px;
+            height          : 3px;
+            background-color: none;
+            border          : none;
+            margin-left     : -16.5px;
+            margin-top      : 7px;
+        }
+
+        &:checked {
+            + label:after {
+                font-family: 'instu-icons';
+                content    : "\EA09";
+            }
+        }
+
+        &:disabled {
+            cursor: not-allowed;
+
+            + label {
+                opacity: 1;
+
+                &::before {
+                    background-color: none;
+                    cursor          : not-allowed;
+                }
+            }
+        }
+    }
+}
+
+%g-checkbox-light {
+    input {
+        &:checked + label:before {
+            background-color: $primary;
+            border-color    : $primary;
+        }
+
+        &:checked + label::after,
+        &:checked + label::before {
+            color: $white;
+        }
+    }
+}
+
+%g-checkbox-dark {
+    input {
+        &:checked + label:before {
+            background-color: $white;
+            border-color    : $white;
+        }
+
+        &:checked + label::after,
+        &:checked + label::before {
+            color: $primary;
+        }
+    }
+}
+
+%g-checkbox-green {
+    input {
+        &:checked + label:before {
+            background-color: $green;
+            border-color    : $green;
+        }
+
+        &:checked + label::after,
+        &:checked + label::before {
+            color: $white;
+
+        }
+    }
+}
+
+.g-checkbox,
+.g-radio {
+    &__circle {
+        &--dark {
+            @extend %g-checkbox;
+            @extend %g-checkbox-dark;
+
+            label::before {
+                border-radius: 50%;
+            }
+        }
+
+        &--green {
+            @extend %g-checkbox;
+            @extend %g-checkbox-green;
+
+            label::before {
+                border-radius: 50%;
+            }
+        }
+
+        &--light {
+            @extend %g-checkbox;
+            @extend %g-checkbox-light;
+
+            label::before {
+                border-radius: 50%;
+            }
+        }
+    }
+
+    &__square {
+        &--dark {
+            @extend %g-checkbox;
+            @extend %g-checkbox-dark;
+        }
+
+        &--green {
+            @extend %g-checkbox;
+            @extend %g-checkbox-green;
+        }
+
+        &--light {
+            @extend %g-checkbox;
+            @extend %g-checkbox-light;
+        }
+    }
+}

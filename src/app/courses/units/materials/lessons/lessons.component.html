@@ -1,0 +1,71 @@
+<!-- NAVIGATION -->
+<div class="g-app-grid__body-view" *ngIf='lesson.id && teacher'>
+  <button [class.active]="view.mode === 'view'" class="g-btn-blue__sm-thick-square--hollow" type="button" (click)='view.mode = "view"'>Preview</button>
+  <button [class.active]="view.mode === 'edit'" class="g-btn-red__sm-thick-square--hollow" type="button" (click)='view.mode = "edit"'>Edit</button>
+</div>
+
+<!--  CREATE/EDIT -->
+<div class="container" *ngIf='teacher && (view.mode === "edit" || !lesson.id)'>
+  <form class='row'>
+    <h3 class='col'>{{lessonModel.id ? (lessonModel.type | titlecase) + ' ' + lessonModel.index : 'New ' + lessonModel.type}}</h3>
+    <div class="col-auto b-lesson__status" (click)='lessonModel.status = "unlocked"'>
+      <button [class.active]="lessonModel.status === 'unlocked'" type="button" class="g-ibtn-green__md--light"><i class='icon-unlocked'></i></button>
+      <p>Unlock</p>
+    </div>
+    <div class="col-auto b-lesson__status" (click)='lessonModel.status = "locked"'>
+      <button [class.active]="lessonModel.status === 'locked'" type="button" class="g-ibtn-black__md--light"><i class='icon-locked'></i></button>
+      <p>Lock</p>
+    </div>
+    <div class="col-12">
+      <h4 class="g-form__head">{{lessonModel.type | titlecase}} Title</h4>
+      <div class='g-input-group'>
+        <i class="icon-title"></i>
+        <instu-input (onType)='lessonModel.name = $event' [value]='lessonModel.name' label="Lesson title" type="text" [required]="true"></instu-input>
+      </div>
+    </div>
+    <div class="col-12">
+      <h4 class="g-form__head">Videos</h4>
+      <instu-list [data]="lessonModel.media_links" iconGroup='video' label="Vimeo Link" field="lesson.media_links" helperText="only Vimeo videos available" (valueUpdated)="lessonModel.media_links = $event"></instu-list>
+    </div>
+    <div class="col-6">
+      <h4 class="g-form__head">Description</h4>
+      <instu-textarea (onType)='lessonModel.note = $event' [value]='lessonModel.note' label="Max 1000 characters" type="text" [required]="true"></instu-textarea>
+    </div>
+    <div class="col-6">
+      <h4 class="g-form__head">Files</h4>
+      <file-uploader theme='light'[options]="uploaderOptionHor" [uploadPermission]='true' [files]='lessonModel.media' (filesAdded)="lessonModel.media = $event" (filesDeleted)="lessonModel.deleted_media = $event">
+      </file-uploader>
+    </div>
+    <div class="col-12 text-right mt-5">
+      <button class="g-btn-green__md-default-default--light" (click)="submitLesson()">{{lessonModel.id ? 'Update' : 'Submit'}}</button>
+    </div>
+  </form>
+</div>
+
+<!-- VIEW -->
+<div class="container" *ngIf="view.mode === 'view' && lesson.id">
+  <div class="row b-lesson__view-titles">
+    <h3 class='col'>{{lesson.type | titlecase}} {{lesson.index}}: {{lesson.name}}</h3>
+    <div class="col-md-3 col-lg-2 col-xl-1" *ngIf="teacher"><i [ngClass]="'g-status-' + lesson.status + '__md'"></i></div>
+    <p class='col-12'>Description: {{lesson.note}}</p>
+  </div>
+  <div class="row align-items-start" *ngIf="lesson.media_links.length">
+    <div class="col-lg col-md-12 video-section">
+      <iframe *ngIf='currentVideo.video_id' class="current-video" [src]="sanitizer.bypassSecurityTrustResourceUrl('https://player.vimeo.com/video/' + currentVideo.video_id)" frameborder="0" [title]="currentVideo.title" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+      <h4>{{currentVideo.title}}</h4>
+      <p>by {{currentVideo.author_name}}</p>
+    </div>
+    <div class="col-xl-3 col-lg-4 col-md-12 video-library" *ngIf="lesson.media_links.length > 1">
+      <div class='side-video' *ngFor='let video of videos; let i = index; trackBy: trackByFn;' [class.active]='selectedVideo === i' (click)="setVideo(i)">
+        <i class='icon-playButton'></i>
+        <img [src]='sanitizer.bypassSecurityTrustUrl(video.thumbnail_url)'>
+        <h5>{{video.title}}</h5>
+        <p>by {{video.author_name}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="lesson.media.length">
+    <h3 class="col-12">Materials</h3>
+    <document class="col-md-12 col-lg-6" theme="horizontal" [document]="item" *ngFor="let item of lesson.media"></document>
+  </div>
+</div>

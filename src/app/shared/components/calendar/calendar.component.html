@@ -1,0 +1,19 @@
+<div class="ical-schedule" *ngIf="type === 'schedule'">
+  <div class="ical-schedule__sidebar">
+    <p *ngFor="let hour of hours">{{hour}}</p>
+  </div>
+  <div class="ical-schedule__head">
+    <span *ngFor="let day of weekdays">{{day}}</span>
+  </div>
+  <div class="ical-schedule__body">
+    <div class="ical-schedule__body-col" *ngFor="let column of weekdays">
+      <div class="ical-schedule__body-cell" *ngFor="let cell of hours">
+      </div>
+    </div>
+    <div class="ical-schedule__event" [ngClass]="event.cssClass" *ngFor="let event of events" [ngStyle]="{'left': (event.weekday*100/7)+'%', 'top': ((event.start_time/60 - weekStartTime)*80)+'px', 'min-height': (event.end_time - event.start_time)/60*80 + 'px'}">
+      <h5>{{event.title | titlecase}}</h5>
+      <i>{{event.location}}</i>
+      <span>{{_transform24To12(event.start_time)}} - {{_transform24To12(event.end_time)}}</span>
+    </div>
+  </div>
+</div>

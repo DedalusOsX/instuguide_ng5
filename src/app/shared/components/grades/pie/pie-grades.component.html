@@ -1,0 +1,21 @@
+<h4 class='col-12 mv-2 text-center'>{{ title }}</h4>
+<div class="col-12 text-center">
+  <span class='m-4'>Total: {{ totalUsedWeight() }} %</span>
+  <span class='m-4'>Remaining: {{ 100 - totalUsedWeight() + '%'}}</span>
+</div>
+<span class="col-12 text-center error-helper " style="display: none; color: #ff3f46;">Grade Weight Total Should Be 100%</span>
+<div class='col-md-6'>
+  <div class="row">
+    <div *ngFor="let weight of gradeWeights; let i = index;" class="col-12">
+      <div class="group">
+        <instu-input numberOnly (onType)='onChangeWeightVal(i, $event)' type='number' max='100' [label]="weight.name" [required]="true"></instu-input>
+        <!--<div [ngClass]="{'has-danger': weight.errors && (weight.dirty || weight.touched)}" class='g-input-helper'>-->
+        <!--{{weight.errors && (weight.dirty || weight.touched) ? "Course name is required" : '' }}-->
+        <!--</div>-->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-6">
+  <chart type="StockChart" [options]="gradeWeightsChartOptions" (load)="saveChartInstance($event.context)"></chart>
+</div>

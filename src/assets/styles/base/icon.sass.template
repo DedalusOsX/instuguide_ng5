@@ -1,0 +1,66 @@
+//
+@font-face{
+    font-family: '{{fontName}}';
+    font-weight: normal;
+    font-style: normal;
+    src: url('{{fontPath}}/{{fontName}}.woff2') format('woff2'), url('{{fontPath}}/{{fontName}}.woff') format('woff'), url('{{fontPath}}/{{fontName}}.ttf') format('truetype');
+}
+
+
+%icon{
+    position: absolute;
+    left: 0;
+    right: 0;
+    font-family: '{{fontName}}';
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 1;
+    speak: none;
+    text-transform: none;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+$icon_list: (
+    {% for icon in icons -%}{{icon.name}}: "\{{icon.code}}", {% endfor %}
+);
+
+@each $name, $glyph_code in $icon_list{
+    .icon-#{$name}{
+        position: relative;
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        font-size: 14px;
+        &:before{
+            @extend %icon;
+            content: $glyph_code;
+        }
+    }
+}
+.icon-circle-yellow{
+  position: relative;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  font-size: 14px;
+  color: $yellow;
+  &:before{
+      @extend %icon;
+      font-family: DejaVuSans !important;
+      content: '\25CF';
+  }
+}
+.icon-circle-green{
+  position: relative;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  font-size: 14px;
+  color: $green;
+  &:before{
+      @extend %icon;
+      font-family: DejaVuSans !important;
+      content: '\25CF';
+  }
+}

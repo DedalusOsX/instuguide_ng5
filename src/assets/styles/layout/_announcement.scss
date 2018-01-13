@@ -1,0 +1,101 @@
+announcement {
+  display: block;
+  width: 100%;
+  p {
+    margin: 0;
+  }
+  .b-inbox {
+
+    .b-inbox__content {
+      height: 740px;
+      .b-inbox__courses {
+        //padding:0 15px;
+
+        .vertical-slider__item {
+          transition: all 0.3s;
+          cursor: pointer;
+
+          img {
+            -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+            filter: grayscale(100%);
+          }
+          span {
+            color: tint($gray, 0.3);
+          }
+
+          &.active,
+          &:hover {
+            img {
+              -webkit-filter: grayscale(0%); /* Safari 6.0 - 9.0 */
+              filter: grayscale(0%);
+            }
+            span {
+              color: color($white);
+            }
+          }
+        }
+      }
+
+      .b-inbox__messages-block {
+        .b-inbox__bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          -webkit-filter: grayscale(100%);
+          filter: grayscale(100%);
+        }
+        .b-inbox__filters {
+          padding: 0 15px;
+        }
+
+        .b-inbox__messages {
+          position: relative;
+          .b-inbox__messages-block_item {
+            padding: 15px;
+            border-left: 4px solid rgba(255, 255, 255, 0);
+            transition: 0.1s;
+            &.active, &:hover {
+              border-left: 4px solid rgba(255, 255, 255, 1);
+              transition: 0.1s;
+              color: #fff;
+              background: rgba(255, 255, 255, 0.2);
+              cursor: pointer;
+            }
+            .b-inbox__messages-block_item-meta {
+              p {
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+              }
+            }
+          }
+        }
+
+      }
+
+      .b-announcement__body {
+        color: $white;
+        padding-top: 50px;
+        .b-announcement__body-content {
+
+          .b-announcement__body-content--text {
+
+          }
+          .b-announcement__body-content--attachments {
+
+          }
+        }
+
+        .b-announcement__body--actions {
+          ul {
+            li {
+              a {
+                font-weight: 200;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,128 @@
+lesson{
+    position: relative;
+
+    form{
+        h3{
+            text-transform: capitalize;
+        }
+    }
+   .b-lesson{
+        &__status {
+            text-align: center;
+            align-self: center;
+            cursor: pointer;
+            p,
+            button {
+                margin-top: 10px;
+            }
+        }
+        &__view-titles{
+            h3{
+                white-space: pre-wrap;
+            }
+            >div {
+                align-self: center;
+                text-align: right;
+                i{
+                    text-align: center;
+                }
+            }
+            p{
+                margin-bottom: 35px;
+            }
+        }
+   }
+
+
+    form{
+
+        h4{
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 15px;
+            background-color: tint($gray, 0.4);
+        }
+        instu-textarea{
+            margin: 0;
+        }
+    }
+
+    .current-video {
+        position: relative;
+        top: 0;
+        @include flexbox();
+        height: 450px;
+        width: 100% !important;
+        background-size: 100% 100%;
+        background: rgba(0, 0, 0, 0.3);
+        background: -webkit-radial-gradient(circle, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 1), rgba(0, 0, 0, 1));
+        background: -o-radial-gradient(circle, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 1), rgba(0, 0, 0, 1));
+        background: -moz-radial-gradient(circle, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 1), rgba(0, 0, 0, 1));
+        background: radial-gradient(circle, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 1), rgba(0, 0, 0, 1));
+        cursor: pointer;
+        .play {
+            i {
+                font-size: 7em;
+                transition: 0.2s;
+                &:hover {
+                    font-size: 9em;
+                    transition: 0.2s;
+                }
+            }
+        }
+        +h4 {
+            margin: 10px 0;
+            font-weight: 400;
+        }
+    }
+
+    .video-library {
+        .side-video {
+            @include on-hover(){
+                background: tint($gray, 0.4);
+                i {
+                    top: 46px;
+                    width: 60px;
+                    height: 60px;
+                    font-size: 60px;
+                    @include transition();
+                }
+            }
+            position: relative;
+            display: block;
+            padding: 10px;
+            transition: 0.3s;
+            &.active {
+                background: tint($gray, 0.4);
+            }
+            h5,
+            p {
+                overflow: hidden;
+                color: $black;
+                font-weight: 300;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+            p{
+                font-size: 14px;
+                opacity: 0.6;
+            }
+            i{
+                position: absolute;
+                top: 56px;
+                left: 0;
+                right: 0;
+                width: 40px;
+                height: 40px;
+                margin: 0 auto;
+                font-size: 40px;
+                color: $white;
+                @include transition();
+            }
+            img {
+                height: auto;
+                width: 100%;
+            }
+        }
+    }
+}

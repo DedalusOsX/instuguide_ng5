@@ -1,0 +1,32 @@
+// -----------------------------------------------------------------------------
+// This file contains styles that are specific to the profile page.
+// -----------------------------------------------------------------------------
+
+.p-course-create {
+
+    > .row {
+        padding: 20px 0 40px;
+
+        h3 {
+            text-align   : center;
+            margin-bottom: 20px;
+
+            + p {
+                text-align   : center;
+                margin-bottom: 30px;
+            }
+        }
+
+    }
+
+    &__materials {
+        text-align: center;
+
+        i {
+            width        : 30px;
+            height       : 30px;
+            margin-bottom: 10px;
+            font-size    : 30px;
+        }
+    }
+}

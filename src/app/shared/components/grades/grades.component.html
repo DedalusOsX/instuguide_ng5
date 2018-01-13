@@ -1,0 +1,24 @@
+<!-- GRADE FILTER CHECKBOXES -->
+<div class="col-9 d-flex flex-column flex-wrap b-course__grades_filter_legends">
+  <div class="g-checkbox__circle--light" *ngFor="let filter of gradeFilterLegendLabels; let i = index;">
+    <input [id]='filter.label' name="activity_types" type="checkbox" [(ngModel)]="filter.checked" [value]="filter.label" (change)='filterLegend(i)' checked="">
+    <label [for]='filter.label' class="form-check-label">{{ filter.label }}</label>
+  </div>
+</div>
+
+<!-- GRADE TIME DROPDOWN FILTER -->
+<div class="col-3 text-right">
+  <instu-dropdown [default]='false' [data]="filterRange" (valueUpdated)="filter($event)" label="Filter Range"></instu-dropdown>
+</div>
+
+<div class="col-12 b-chart">
+  <div class="row">
+    <div class="col-auto g-grades__block--arrow" *ngIf="currentFilterRange !== 'all'" (click)="prev()">
+      <i class='icon-left'></i>
+    </div>
+    <chart type="StockChart" [options]="options" (load)="saveInstance($event.context)"></chart>
+    <div class="col-auto g-grades__block--arrow" *ngIf="currentFilterRange !== 'all'" (click)="next()">
+      <i class='icon-right'></i>
+    </div>
+  </div>
+</div>

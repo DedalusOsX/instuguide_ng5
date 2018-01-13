@@ -1,0 +1,13 @@
+<!-- HIDDEN UPLOADER INPUT -->
+<input style='display: none;' [name]='field' [id]='field' type="file" ng2FileSelect [uploader]="uploaderInstance" accept="image/*" />
+
+<!-- CIRCULAR IMAGE UPLOADER WITH PREVIEW -->
+<ng-container *ngIf="view === 'circle'">
+  <img class="g-img__xl--{{theme}}" [src]="options.previewImage">
+  <label [for]='field'>{{ options.previewImage ? 'Replace ' + label : 'Upload ' + label }}</label>
+</ng-container>
+
+<!-- BUTTON IMAGE UPLOADER -->
+<ng-container *ngIf="view === 'button'">
+  <label [for]='field' class="g-tibtn-green__xl-thick-default--right"><span>{{label}}</span><i class="icon-add"></i></label>
+</ng-container>

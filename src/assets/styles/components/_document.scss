@@ -1,0 +1,34 @@
+document {
+    display: block;
+    width: 100%;
+    &[theme="horizontal"]{
+        position: relative;
+        @include flexbox();
+        height: 70px;
+        padding: 10px;
+        margin-top: 20px;
+        color: $primary;
+        img {
+            width: 50px;
+            height: 50px;
+            margin-right: 20px;
+            float: left;
+        }
+
+        span {
+            flex-basis: 0;
+            flex-grow: 1;
+            padding-right: 10px;
+            overflow: hidden;
+            p {
+                margin: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                &:last-child {
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+}

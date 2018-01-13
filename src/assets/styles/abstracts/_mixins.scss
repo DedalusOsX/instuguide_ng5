@@ -1,0 +1,180 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass mixins.
+// -----------------------------------------------------------------------------
+
+/// Event all
+/// @param {Number} $transition[0.2] - transition time in seconds
+/// @content applied to parent element if any event is triggered on it
+@mixin on-event($transition: 0.2) {
+    transition: $transition*1s;
+
+    &.active,
+    &:active,
+    &:focus,
+    &:hover {
+        transition: $transition*1s;
+        cursor    : pointer;
+        @content;
+    }
+}
+
+/// Event click
+/// @param {Number} $transition[0.2] - transition time in seconds
+/// @content applied to parent element if any event is triggered on it
+@mixin on-input($transition: 0.2) {
+    transition: $transition*1s;
+
+    &.active,
+    &:focus {
+        transition: $transition*1s;
+        cursor    : pointer;
+        @content;
+    }
+}
+
+/// Event click
+/// @param {Number} $transition[0.2] - transition time in seconds
+/// @content applied to parent element if any event is triggered on it
+@mixin on-active($transition: 0.2) {
+    transition: $transition*1s;
+
+    &.active {
+        transition: $transition*1s;
+        cursor    : pointer;
+        @content;
+    }
+}
+
+/// Event hover
+/// @param {Number} $transition[0.2] - transition time in seconds
+/// @content applied to parent element if any event is triggered on it
+@mixin on-hover($transition: 0.2) {
+    transition: $transition*1s;
+
+    &:hover {
+        transition: $transition*1s;
+        cursor    : pointer;
+        @content;
+    }
+}
+
+/// Make a context based selector a little more friendly
+/// @param {String} $scope - Element that contains parent tag
+/// @content applied on parent element if it is located in the the mentioned scope
+@mixin when-inside($scope) {
+    #{$scope} & {
+        @content;
+    }
+}
+
+/// Make a theme mixin to target all typography elements varying from theme
+/// @content applied on all typography elements
+@mixin theme-typography() {
+    a,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    i,
+    input,
+    label,
+    p,
+    span {
+        @content;
+    }
+}
+
+/// Apply blur to a block
+/// @param {String} $type - filter type
+/// @param {Number} $value - filter value
+@mixin filter($type, $value) {
+    -webkit-filter: call($type, $value);
+    -moz-filter: call($type, $value);
+    -o-filter: call($type, $value);
+    -ms-filter: call($type, $value);
+    filter: call($type, $value);
+}
+
+/// Apply shadow to a block
+/// @param {Number} $horizontal[0] - horizontal shift
+/// @param {Number} $vertical[2] - vertical shift
+/// @param {Number} $blur[2] - blur radius
+/// @param {Number} $spread[2] - spread radius
+/// @param {Color} $color[$black] - shadow color
+/// @param {Number} $opacity[0.2] - opacity
+@mixin shadow($horizontal: 0, $vertical: 2, $blur: 2, $spread: 2, $color: $black, $opacity: 0.2) {
+    -webkit-box-shadow: $horizontal*1px $vertical*1px $blur*1px $spread*1px rgba($color, $opacity);
+    -moz-box-shadow   : $horizontal*1px $vertical*1px $blur*1px $spread*1px rgba($color, $opacity);
+    box-shadow        : $horizontal*1px $vertical*1px $blur*1px $spread*1px rgba($color, $opacity);
+}
+
+@mixin borderCollapse($size, $color) {
+    -webkit-box-shadow: $size 0 0 0 $color, 0 $size 0 0 $color, $size $size 0 0 $color, $size 0 0 0 $color inset, 0 $size 0 0 $color inset;
+    -moz-box-shadow   : $size 0 0 0 $color, 0 $size 0 0 $color, $size $size 0 0 $color, $size 0 0 0 $color inset, 0 $size 0 0 $color inset;
+    box-shadow        : $size 0 0 0 $color, 0 $size 0 0 $color, $size $size 0 0 $color, $size 0 0 0 $color inset, 0 $size 0 0 $color inset;
+}
+
+@mixin borderHorizontalCollapse($size, $color) {
+    -webkit-box-shadow: $size 0 0 0 $color, $size 0 0 0 $color inset;
+    -moz-box-shadow   : $size 0 0 0 $color, $size 0 0 0 $color inset;
+    box-shadow        : $size 0 0 0 $color, $size 0 0 0 $color inset;
+}
+
+@mixin multilayer-shadow($layers) {
+    $shadowProperty   : null;
+    @each $layer in $layers {
+        $currentLayer  : nth($layer,1)*1px nth($layer,2)*1px nth($layer,3)*1px nth($layer,4)*1px rgba(nth($layer,5), nth($layer,6)) ,;
+        $shadowProperty: join($shadowProperty, $currentLayer);
+    }
+    // $shadowProperty   : unquote($shadowProperty);
+
+    -webkit-box-shadow: $shadowProperty;
+    -moz-box-shadow   : $shadowProperty;
+    box-shadow        : $shadowProperty;
+}
+
+/// Flexbox mixin
+/// @param {String} $horizontal[center] - affects horizontal aligning
+/// @param {String} $vertical[center] - affects vertical aligning
+/// @param {String} $direction[row] - affects flex direction
+/// @param {String} $wrap[wrap] - affects flex wrapping
+/// @example @include flexbox();
+/// @example @include flexbox(flex-end,flex-start,column,no-wrap);
+@mixin flexbox($horizontal: center, $vertical: center, $direction: row, $wrap: wrap) {
+    @extend %flexbox;
+    flex-direction: $direction;
+    flex-wrap     : $wrap;
+    @if ($direction == row) {
+        justify-content: $horizontal;
+        align-items    : $vertical;
+    } @else {
+        justify-content: $vertical;
+        align-items    : $horizontal;
+    }
+}
+
+/// Transition mixin
+/// @param {Number} $time[0.2] - transition time
+/// @param {String} $type[ease-in-out] - transition type
+/// @example @include transition();
+/// @example @include transition(0.5, ease-in);
+@mixin backdrop-blur($size: 5) {
+    -webkit-backdrop-filter: blur($size*1px);
+    -moz-backdrop-filter: blur($size*1px);
+    -o-backdrop-filter: blur($size*1px);
+    backdrop-filter: blur($size*1px);
+}
+
+/// Transition mixin
+/// @param {Number} $time[0.2] - transition time
+/// @param {String} $type[ease-in-out] - transition type
+/// @example @include transition();
+/// @example @include transition(0.5, ease-in);
+@mixin transition($time: 0.2, $type: ease-in-out) {
+    -webkit-transition: $time*1s $type all;
+    -moz-transition   : $time*1s $type all;
+    -o-transition     : all $time*1s $type;
+    transition        : $time*1s $type all;
+}

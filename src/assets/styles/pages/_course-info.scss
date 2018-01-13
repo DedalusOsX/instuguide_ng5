@@ -1,0 +1,141 @@
+// -----------------------------------------------------------------------------
+// This file contains styles that are specific to the profile page.
+// -----------------------------------------------------------------------------
+
+.p-course-info {
+    &__banner {
+        @extend %g-banner;
+        padding-top: 60px;
+        min-height: 640px;
+        &-sidebar {
+            @include flexbox(flex-start, flex-start, column);
+            padding: 40px 15px;
+            background: rgba($black, 0.85);
+            >h2 {
+                margin-bottom: 20px;
+                font-weight: 300;
+            }
+            >h4 {
+                margin-bottom: 10px;
+                &:nth-child(2),
+                &:nth-child(5) {
+                    margin-bottom: 20px;
+                }
+            }
+            >p {
+                height: 130px;
+                overflow-y: scroll;
+                margin-bottom: auto;
+                color: shade($white, 0.3) !important;
+            }
+            &--profile {
+                @include flexbox();
+                img {
+                    margin-right: 20px;
+                    cursor: pointer;
+                }
+                >div {
+                    width: calc(100% - 145px);
+                    h4 {
+                        font-weight: 400;
+                        font-size: 26px;
+                    }
+                    h4,
+                    h6 {
+                        margin-bottom: 5px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                    h6 {
+                        color: shade($white, 0.3) !important;
+                    }
+                }
+            }
+        }
+        &-main {
+            @include flexbox(center, flex-start);
+            >div {
+                max-height: 320px;
+                min-width: 320px;
+                max-width: 960px;
+                padding: 40px 15px;
+                margin-top: 100px;
+                background: rgba($black, 0.85);
+            }
+            &--meta {
+                text-align: center;
+                i {
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 10px;
+                    font-size: 20px;
+                    line-height: 1;
+                    vertical-align: middle;
+                }
+                span {
+                    font-size: 20px;
+                    font-weight: 300;
+                    vertical-align: middle;
+                }
+                ul {
+                    list-style-type: circle;
+                    li {
+                        font-weight: 300;
+                    }
+                }
+            }
+            &--action {
+                margin-top: 30px;
+                text-align: center;
+                h2 {
+                    margin-bottom: 30px;
+                }
+                button {
+                    display: inline-block;
+                    margin: 0 10px;
+                }
+            }
+        }
+    }
+
+    &__main{
+        @extend .g-theme-light;
+        h3 {
+            margin: 20px 0;
+            text-align: center;
+            font-weight: 300;
+        }
+    }
+    &__date {
+        margin-top: 30px;
+        @include flexbox();
+        span {
+            font-weight: 300;
+            text-align: center;
+            b {
+                font-size: 25px;
+            }
+        }
+        i {
+            width: 30px;
+            height: 30px;
+            margin: 0 20px;
+            font-size: 30px;
+        }
+    }
+    &__cal-types{
+        margin: 20px 0;
+        text-align: center;
+        i{
+            font-size: 25px;
+            height: 25px;
+            width: 25px;
+            vertical-align: middle;
+        }
+        span{
+            vertical-align: middle;
+            text-transform: capitalize;
+        }
+    }
+}

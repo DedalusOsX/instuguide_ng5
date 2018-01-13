@@ -1,0 +1,35 @@
+// -----------------------------------------------------------------------------
+// This file contains styles that are specific to the home page.
+// -----------------------------------------------------------------------------
+
+.p-dashboard {
+    &__courses,
+    &__grades {
+        &--top {
+            align-items: center;
+            padding    : 30px 0 20px;
+
+            h1 {
+                overflow: hidden;
+                white-space: nowrap;
+                text-align: left;
+                text-overflow: ellipsis;
+
+
+                + div {
+                    text-align: right;
+                }
+            }
+        }
+
+        &--body {
+            padding: 20px 0;
+        }
+
+        &--empty {
+            height         : 300px;
+            justify-content: center;
+            align-items    : center;
+        }
+    }
+}

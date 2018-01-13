@@ -1,0 +1,119 @@
+// -----------------------------------------------------------------------------
+// This file contains styles that are specific to the profile page.
+// -----------------------------------------------------------------------------
+
+.p-profile {
+    &__banner {
+        position: relative;
+
+        > i {
+            width    : 60px;
+            height   : 60px;
+            margin   : 20px 0;
+            font-size: 60px;
+
+            @include on-hover() {
+                width    : 80px;
+                height   : 80px;
+                font-size: 80px;
+            }
+
+            + p {
+                font-size: 22px;
+            }
+        }
+
+        image-uploader {
+            &[field="avatar"] {
+                position: absolute;
+                bottom  : -75px;
+                left    : 0;
+                right   : 0;
+                margin  : 0 auto;
+            }
+
+            &[field="background"] {
+                position: absolute;
+                bottom  : 60px;
+                right   : 60px;
+            }
+        }
+    }
+
+    &__edit-form {
+        padding: 80px 0 60px;
+    }
+
+    &__portfolio {
+        &--title {
+            padding: 30px 0 20px;
+        }
+
+        &--body {
+            padding: 20px 0;
+
+            h2 {
+                margin     : 35px 0 10px;
+                font-size  : 30px;
+                font-weight: 300;
+                text-align : center;
+            }
+
+            &-course {
+                @include flexbox();
+                padding     : 40px 0;
+                border-right: 1px solid tint($gray,0.1);
+
+                img {
+                    margin-right: 15px;
+                }
+
+                > div {
+                    color: $primary;
+
+                    &:nth-child(2) {
+                        @include respond-to(sm) {
+                            margin-top : 20px;
+                            margin-left: auto;
+                            text-align : center;
+                        }
+                        @include respond-to(md) {
+                            margin-top : 0;
+                            margin-left: 0;
+                            text-align : left;
+                        }
+                        margin-right: auto;
+                        text-align  : left;
+                        font-weight : 300;
+
+                        p {
+                            margin: 5px 0;
+                        }
+
+                        span {
+                            margin: 10px 0;
+                            color : $blue-light;
+                        }
+                    }
+
+                    &:nth-child(3) {
+                        button {
+                            display: block;
+                            margin : 10px 0;
+                        }
+                    }
+                }
+            }
+
+            &-skills {
+                @include flexbox();
+            }
+        }
+
+        &--empty {
+            height         : 300px;
+            justify-content: center;
+            align-items    : center;
+        }
+    }
+}

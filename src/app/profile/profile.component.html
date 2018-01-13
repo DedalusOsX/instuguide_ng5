@@ -1,0 +1,88 @@
+<section class="container-fluid p-profile">
+
+  <!-- BANNER -->
+  <div class="row g-banner__profile p-profile__banner" [ngStyle]="{ 'background-image': 'url('+ backPreview +')' }">
+    <ng-container *ngIf="view.mode === 'view'">
+      <img class="g-img__lg--light" [src]="profile.avatar">
+      <h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
+      <p> {{ profile.organization || 'Organization Not Available'}} | {{ profile.department || 'Department Not Available'}} | {{ profile.position || 'Position Not Avaialble' }}</p>
+      <button class="g-btn-yellow__md-default-default--dark" *ngIf='amI' (click)="view.mode = 'edit'">Edit Profile</button>
+    </ng-container>
+    <ng-container *ngIf="view.mode === 'edit' && amI">
+      <i class="icon-return" (click)="view.mode = 'view'"></i>
+      <p>Return</p>
+      <image-uploader field='avatar' theme='dark' view="circle" label="Avatar" [options]="avatarUploaderOptions" (fileUpdated)="profile.avatar = $event._file; updateProfile();"></image-uploader>
+      <image-uploader field='background' view="button" label="Add Background" [options]="backgroundUploaderOptions" (fileUpdated)="profile.background = $event._file; updateProfile();" (fileExternalPreview)="backPreview = $event"></image-uploader>
+    </ng-container>
+  </div>
+
+  <!-- EDIT FORM -->
+  <div class="row g-semi-background p-profile__edit-form" *ngIf="view.mode === 'edit'">
+    <form class="container" #profileForm="ngForm" novalidate>
+      <div class="row">
+        <div class="col-6">
+          <h4 class="g-form__head">Personal</h4>
+          <instu-input (onType)='profile.first_name = $event' label="First name" [value]="profile.first_name" required="true"></instu-input>
+          <instu-input (onType)='profile.last_name = $event' label="Last name" [value]="profile.last_name" required="true"></instu-input>
+          <instu-dropdown (valueUpdated)='profile.language = $event' [default]="true"  [selected]="profile.language"
+                          propLabel='label' propValue="code" [data]="languages" label="Platform Language" required="true"></instu-dropdown>
+        </div>
+        <div class="col-6">
+          <h4 class="g-form__head">Professional</h4>
+          <instu-input (onType)='profile.position = $event' label="Position" [value]="profile.position"></instu-input>
+          <instu-input (onType)='profile.department = $event' label="Department" [value]="profile.department"></instu-input>
+          <instu-input (onType)='profile.organization = $event' label="Organization" [value]="profile.organization"></instu-input>
+        </div>
+        <div class="col-12 text-center mb-5">
+          <button (click)='updateProfile()' class="g-btn-green__md-default-default--light">Update Profile</button>
+        </div>
+        <div class="col-12">
+          <h4 class="g-form__head">Password</h4>
+        </div>
+        <div class="col-4">
+          <instu-input (onType)='auth.old_password = $event' label="Old Password" type="password" required="true"></instu-input>
+        </div>
+        <div class="col-4">
+          <instu-input (onType)='auth.password = $event' label="Password" type="password" required="true"></instu-input>
+        </div>
+        <div class="col-4">
+          <instu-input (onType)='auth.confirm_password = $event' label="Confirm Password" type="password" required="true"></instu-input>
+        </div>
+        <div class="col-12 text-center">
+          <button [disabled]="!auth.old_password || !auth.password || !auth.confirm_password || auth.password != auth.confirm_password" (click)='updatePassword()' class="g-btn-blue-light__md-default-default--light">Change Password</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- PORTFOLIO -->
+  <div class="row g-light-background" *ngIf="view.mode !== 'edit'">
+    <div class="container">
+      <div class="row p-profile__portfolio--title">
+        <h1 class="col-12">{{ amI ? 'My portfolio' : profile.first_name + "\'s portfolio" }}</h1>
+      </div>
+      <p class="row p-profile__portfolio--empty" *ngIf='!courses.length'>{{ amI ? 'You don\'t' : profile.first_name + ' ' + profile.last_name + ' doesn\'t' }} have any courses.</p>
+      <div class="row p-profile__portfolio--body" *ngIf='courses.length'>
+        <h2 class="col-sm-4">Courses</h2>
+        <h2 class="col-sm-4">Year</h2>
+        <h2 class="col-sm-4">Skills</h2>
+        <ng-container *ngFor="let year of courses; let i = index; trackBy: trackByFn;">
+          <h3 class="col-12 text-center pv-4">{{ year[0].created_at | date: 'y' }}</h3>
+          <ng-container *ngFor="let course of year; trackBy: trackByFn">
+            <div class='col-6 p-profile__portfolio--body-course'>
+              <img class='g-img__lg--light' [routerLink]="['/courses/my', course.id]" [src]="course.avatar">
+              <div>
+                <h3>{{ course.name }}</h3>
+                <p><b>Course Code:</b> {{course.code}}</p>
+                <p><b>Course Instructor:</b> {{course.created_by.first_name}} {{course.created_by.last_name}}</p>
+              </div>
+            </div>
+            <p class="offset-2 col-4 p-profile__portfolio--body-skills">
+              <ng-container *ngFor="let skill of course.skills; let last = last;">{{ !last ? skill + ', ' : skill }}</ng-container>
+            </p>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</section>

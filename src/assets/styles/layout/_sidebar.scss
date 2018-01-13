@@ -1,0 +1,36 @@
+$sidebar-width: 100px;
+
+sidebar {
+    position: fixed;
+    top       : 60px;
+    z-index   : z-index(sidebar);
+    height    : calc(100% - 60px);
+    width     : 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background: shade($gray);
+
+    @include transition();
+
+    &.active {
+        padding: 10px;
+        width: $sidebar-width;
+        @include transition();
+    }
+    .sidebar-item{
+        @include on-hover(){
+            @include filter(grayscale, 0);
+            @include transition();
+        }
+        @include filter(grayscale, 100%);
+        @include transition();
+        display: block;
+        padding: 20px 0;
+        text-align: center;
+
+        p{
+            margin-top: 10px;
+            color: $white;
+        }
+    }
+}

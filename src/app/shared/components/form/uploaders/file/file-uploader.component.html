@@ -1,0 +1,26 @@
+<!-- HIDDEN UPLOADER INPUT -->
+<input [name]='field' [id]='field' type="file" ng2FileSelect [uploader]="uploaderInstance" multiple [accept]="acceptedFormats" />
+
+<!-- EXISTING FILES FROM SERVER -->
+<ng-container *ngIf="existingFiles">
+  <div *ngFor="let item of existingFiles; let i = index;">
+    <button type="reset" *ngIf='uploadPermission' (click)="removeItem(i);">Click here to remove</button>
+    <img [src]="setIcon(item.fileName)">
+    <p>{{ item.fileName }}</p>
+    <p>({{item.size | fileSize}})</p>
+  </div>
+</ng-container>
+
+<!-- NEW FILES FROM LOCAL -->
+<ng-container *ngIf="uploaderInstance.queue.length">
+  <div *ngFor="let item of uploaderInstance.queue; let i = index;">
+    <button type="reset" *ngIf='uploadPermission' (click)="item.remove();filesAdded.emit();">Click here to remove</button>
+    <img [src]="setIcon(item.file.name)">
+    <p>{{ item.file.name }}</p>
+    <p>({{item.file.size | fileSize}})</p>
+  </div>
+</ng-container>
+
+<!-- BUTTON -->
+<p *ngIf="!uploaderInstance.queue.length && !existingFiles.length">{{uploadPermission ? 'No items selected yet': 'You\'re late from your deadline!'}}</p>
+<label class="g-btn-blue-light__md-default-default--{{ theme }}" *ngIf='uploadPermission' [for]='field'>{{uploaderInstance.queue.length? 'Add More Files' :'Add Files'}}</label>

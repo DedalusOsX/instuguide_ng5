@@ -1,0 +1,25 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass variables.
+// -----------------------------------------------------------------------------
+
+/// Relative or absolute URL where all assets are served from
+/// @type String
+/// @example scss - When using a CDN
+$base-url: '/assets/' !default;
+
+/// Z indexes of different type of elements
+/// @type Map
+$z-index: (
+    backstage  : -1,
+    default    : 1,
+    absolute   : 10,
+    absolutef  : 11,
+    absoluteff : 12,
+    absolutefff: 13,
+    sidebar    : 100,
+    navbar     : 200,
+    modal      : 1000,
+    modalf     : 1001,
+    modalff    : 1002,
+    modalfff   : 1003,
+);

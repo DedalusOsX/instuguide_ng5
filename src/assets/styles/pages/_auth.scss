@@ -1,0 +1,77 @@
+// -----------------------------------------------------------------------------
+// This file contains styles that are specific to the home/landing page.
+// -----------------------------------------------------------------------------
+@media screen and (max-device-width: 800px) {
+    html {
+        background: url(/assets/images/home/main.png) #000 no-repeat center center fixed;
+    }
+    #bgvid {
+        display: none;
+    }
+}
+
+.p-auth {
+    > .row{
+        @extend .g-fullheight;
+        position: relative;
+        overflow: hidden;
+    }
+    video{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        z-index: -100;
+        -ms-transform: translateX(-50%) translateY(-50%);
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+        background: url('/assets/images/home/main.png') no-repeat;
+        background-size: cover;
+    }
+    &__title{
+        @include flexbox();
+        color: $white;
+        h1{
+            @include respond-to(sm){
+                font-size: 72px;
+            }
+            @include respond-to(xl){
+                font-size: 120px;
+            }
+        }
+    }
+    &__main {
+        @include respond-to(xs){
+            padding: 0 15px;
+        }
+        @include respond-to(md){
+            padding: 0 50px;
+        }
+        @extend .g-fullheight;
+        @include flexbox(center, center, column);
+        border-radius: 2px;
+        background: $white;
+        overflow: scroll;
+        text-align: center;
+        >button{
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+        > i {
+            height: 250px;
+            width: 250px;
+            margin-top: auto;
+            font-size: 250px;
+        }
+        form{
+            width: 100%;
+            max-width: 675px;
+            margin-bottom: auto;
+        }
+    }
+}

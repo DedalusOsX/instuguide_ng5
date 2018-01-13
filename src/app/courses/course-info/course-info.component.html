@@ -1,0 +1,81 @@
+<section class="container-fluid p-course-info">
+
+  <!-- BANNER -->
+  <div class="row p-course-info__banner" [ngStyle]="{ 'background-image': 'url('+ course.avatar +')' }">
+    <div class="col-xl-3 col-lg-4 p-course-info__banner-sidebar">
+      <h2>{{course.name}}</h2>
+      <h4>Course Code: <b>{{course.code}}</b></h4>
+      <h4>Course Description</h4>
+      <p>{{course.description}}</p>
+      <h4>Course Instructor</h4>
+      <div class="p-course-info__banner-sidebar--profile" *ngIf="course.created_by">
+        <img class="g-img__lg--light" [src]="course.created_by.avatar" [routerLink]="['/profile', course.created_by.id]">
+        <div>
+          <h4>{{ course.created_by.first_name.charAt(0) }}. {{ course.created_by.last_name }}</h4>
+          <h6><b>{{ course.created_by.position ? course.created_by.position  : 'Position N/A'}}, {{ course.created_by.department ? course.created_by.department : 'Department N/A'}}</b></h6>
+          <h6>{{ course.created_by.organization ? course.created_by.organization : 'Organization N/A'}}</h6>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-9 col-lg-8 p-course-info__banner-main">
+      <div>
+        <div class="row">
+          <div class="col-4 p-course-info__banner-main--meta">
+            <i class='icon-books'></i>
+            <span>Books</span>
+            <ul>
+              <li *ngFor='let item of course.books'>{{item}}</li>
+            </ul>
+          </div>
+          <div class="col-4 p-course-info__banner-main--meta">
+            <i class='icon-syllabus'></i>
+            <span>Syllabus</span>
+            <a [href]="item.path" download *ngFor='let item of course.syllabus'>
+              <i [iconPicker]="item.extension"></i>
+              <span class='ml-2'>{{item.fileName}}</span>
+            </a>
+          </div>
+          <div class="col-4 p-course-info__banner-main--meta">
+            <i class="icon-skills"></i>
+            <span>Skills</span>
+            <ul>
+              <li *ngFor='let item of course.skills'>{{item}}</li>
+            </ul>
+          </div>
+          <div class="col-12 p-course-info__banner-main--action">
+            <h2>{{course.price || 'Free'}}</h2>
+            <button class="g-btn-blue__md-default-default--dark" *ngIf="!isCourseBelongsUser" (click)="bookmarkCourse()">{{ isBookmarkBelongsUser ? 'Unbookmark' : 'Bookmark'}}</button>
+            <button class="g-btn-green__md-default-default--dark" *ngIf='!isCourseBelongsUser && !isTeacher' (click)="startCourse()">Start</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Calendar -->
+
+  <div class="container">
+    <div class="row">
+      <div class="col-12 p-course-info__date">
+        <span>Start Date:
+          <br>
+          <b>{{course.start_date | date: 'dd MMM y'}}</b>
+        </span>
+        <i class='icon-clock'></i>
+        <span>End Date:
+          <br/>
+          <b>{{course.end_date | date: 'dd MMM y'}}</b>
+        </span>
+      </div>
+    </div>
+    <div class="row justify-content-center" *ngIf='course.type == "offline"'>
+      <div class="col-2 p-course-info__cal-types" *ngFor="let eventType of eventTypes">
+        <i [ngClass]="'icon-circle-' + eventColors[eventType]"></i>
+        <span>{{ eventType }} </span>
+      </div>
+      <div class="col-12">
+        <ical [events]="events" type='schedule'></ical>
+      </div>
+    </div>
+  </div>
+</section>

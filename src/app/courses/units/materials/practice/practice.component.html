@@ -1,0 +1,159 @@
+<section class='h-100 w-100'>
+  <!--<div class="g-course-material__detailed__content-banner">
+      <div class="container">
+          <div class="row">
+              <h1>{{ selectedMaterial.label }}</h1>
+              <div class="mb-3">
+                  <button type="button" *ngFor="let but of lessons; let i = index " class="g-btn g-btn-light-green g-btn__sm g-btn__thin "
+                          [ngClass]='{"active": selected.lesson === i}'
+                          (click)='setActiveLesson(i)'>{{ but.name }}</button>
+                  <button (click)="onAddOne();" class="g-btn g-btn-full-green g-btn__circle">+</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div *ngIf="newLesson">
+      <form class='row h-100 align-items-start'>
+          <h3 class='col-12 pb-3'>New {{ selectedMaterial.label }}</h3>
+          <div class="col-4">
+              <div class="group">
+                  <input type="text" id='name' name="name" [(ngModel)]="newLesson.name" aria-label='Lesson Name' class="g-input" #name="ngModel" required>
+                  <label for='name'>Lesson name</label>
+                  <div [ngClass]="{'has-danger': name.errors && (formSubmitted || name.dirty || name.touched)}" class='g-input-helper'>
+                      {{name.errors && (formSubmitted || name.dirty || name.touched) ? "Lesson name is required" : "Pick a lesson name" }}
+                  </div>
+              </div>
+          </div>
+          <div class="col-4">
+              <div *ngFor="let media of newLesson.media_links; let i = index; trackBy:trackByFn" class="group">
+                  <input type="text" id='url{{ i }}' name="url{{ i }}" [(ngModel)]="newLesson.media_links[i]"
+                         aria-label='Lesson Video' class="g-input"  required >
+                  <label for='url{{ i }}'>Lesson video url</label>
+                  &lt;!&ndash;<div [ngClass]="{'has-danger': media_link.errors && (formSubmitted || media_link.dirty || media_link.touched)}" class='g-input-helper'>&ndash;&gt;
+                      &lt;!&ndash;{{media_link.errors && (formSubmitted || media_link.dirty || media_link.touched) ? "Lesson video is required" : "Pick a lesson name" }}&ndash;&gt;
+                  &lt;!&ndash;</div>&ndash;&gt;
+                  <button *ngIf="newLesson.media_links.length" (click)="newLesson.media_links.splice(i, 1)">-</button>
+              </div>
+              <button (click)="newLesson.media_links.push('')">+</button>
+          </div>
+          <div class="col-4 text-center">
+              <div class="group">
+                  <file-uploader [options]="lessonUploaderOpt" field='media'  (filesUpdated)="newLesson.media = $event">
+                  </file-uploader>
+              </div>
+          </div>
+          <div class="col-8">
+              <div class="group">
+                  <textarea name='note' class='g-input' id='note' #note="ngModel" [(ngModel)]="newLesson.note" required></textarea>
+                  <label [class.complete]='newLesson.note' for="note">Assignment note</label>
+
+                  <div [ngClass]="{'has-danger': note.errors && (formSubmitted || note.dirty || note.touched)}" class="g-input-helper">
+                      {{note.errors && (formSubmitted || note.dirty || note.touched) ? "Lesson content is required" : 'Max 100000 Characters'}}
+                  </div>
+              </div>
+          </div>
+          <div class="col-12 align-self-end d-flex justify-content-end align-items-end">
+              <button class="g-btn g-btn__md g-btn-full-green" (click)="submitLesson()">Submit</button>
+          </div>
+      </form>
+  </div>
+  <div *ngIf="lesson && !newLesson" class="g-course-material__detailed__content-body pb-5" >
+      <div class='container'>
+          <div class="row">
+              <h3 class='mt-3 col-12'>
+                      <span>{{selectedMaterial.label}}</span> {{lesson.name}}
+                  </h3>
+              <p class='mt-2 col-12'>Description: {{lesson.note}}</p>
+          </div>
+          <div class="row video-section">
+              <div class="col-xl-9 col-lg-12">
+                  <div class="current-video">
+                      <video #videoplayer (click)='pauseVideo(); view = !view' preload='auto' [attr.controls]='view ? true : null'>
+                          <source [src]="video.url" type="video/mp4"> Your browser does not support the video tag.
+                      </video>
+                      <div *ngIf='!view' #videoplayerback (click)='playVideo(); view = !view' class='video-background d-flex justify-content-center align-items-center'>
+                          <div class='play'>
+                              <i class='icon-PlayButton'></i>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="current-video-text mt-3">
+                      <h2>NAME</h2>
+                      <p>by AUTHOR</p>
+                  </div>
+              </div>
+              <div class="col-xl-3 col-lg-12 video-library">
+                  <div class='row'>
+                      <div *ngFor='let item of lesson.media_links; let j = index'
+                           (click)='setActiveVideo(j)' class="side-video col-xl-12 col-lg-4"
+                           [class.active]='j === selected.video'>
+                          <div class="side-video-shell">
+                              <video preload='auto'>
+                                  <source [src]="item" type="video/mp4"> Your browser does not support the video tag.
+                              </video>
+                              <div class='video-background d-flex justify-content-center align-items-center'>
+                                  <div class='play'>
+                                      <i class='icon-PlayButton'></i>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="side-video-text">
+                              <h5>NAME</h5>
+                              <p>by AUTHOR</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="row document-section mt-3">
+              <div class='section-title col-12'>
+                  <hr>
+                  <h3>Documents</h3>
+                  <hr>
+              </div>
+              <div class="col-12 mt-4 mb-4" *ngIf="lesson.media.length">
+                  <div class="row">
+                      <div *ngFor='let file of lesson.media' class="mt-4 mb-4 col-12 document-section__item d-flex justify-content-start align-items-center">
+                          <a download [href]='file.path' class='d-flex align-items-center'>
+                              <img class='mr-4' [src]="setIcon(file.extension)">
+                              <div class='document-section__item__text text-center text-xl-left'>
+                                  <p>{{file.fileName}}</p>
+                                  <p>File size: ({{file.size | fileSize}})</p>
+                              </div>
+                          </a>
+                          <div class='document-section__item__date text-center'>
+                              <p>Updated at:<br>{{file.updated}}</p>
+                          </div>
+                          <a download [href]='file.path'>
+                              <button class="g-btn g-btn-light-green g-btn__sm">Download</button>
+                          </a>
+&lt;!&ndash;                             <div class='document-section__item__actions g-btn-multiitem d-flex justify-content-center align-items-center'>
+                              <a><i class="ml-2 mr-2 icon-Search"></i></a>
+                              <span>|</span>
+                              <a download [href]='file.url'><i class="ml-2 mr-2 icon-Download"></i></a>
+                          </div> &ndash;&gt;
+                      </div>
+                  </div>
+              </div>
+          </div>-->
+  <!--<div class="row audio-section">-->
+  <!--<div class='section-title col-12'>-->
+  <!--<hr>-->
+  <!--<h3>Audios</h3>-->
+  <!--<hr>-->
+  <!--</div>-->
+  <!--<div class="mt-2 col-6 audio-section__current">-->
+  <!--<h4>{{audio.name}}</h4>-->
+  <!--<audio class='w-100' controls>-->
+  <!--<source [src]="audio.url" type="audio/mp3"> Your browser does not support the video tag.-->
+  <!--</audio>-->
+  <!--</div>-->
+  <!--<div class="mt-2 col-6 audio-section__library">-->
+  <!--<p *ngFor='let audioitem of lesson.audios; let k = index' (click)='setActiveAudio(k)'>-->
+  <!--{{k+1}}. {{audioitem.name}}-->
+  <!--</p>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--</div>-->
+</section>

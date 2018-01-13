@@ -1,0 +1,18 @@
+// -----------------------------------------------------------------------------
+// This file contains everything related to the light theme.
+// -----------------------------------------------------------------------------
+
+.g-theme-light {
+
+    @include theme-typography() {
+        color: $primary;
+    }
+
+    .g-input {
+        color: $primary;
+
+        ~ label {
+            color: $primary;
+        }
+    }
+}

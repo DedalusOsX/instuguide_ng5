@@ -1,0 +1,37 @@
+<div class="nav">
+  <div class="col">
+    <a routerLink='/' class="nav-menu__item">
+      <i class="icon-home"></i>
+      <p>Home</p>
+    </a>
+    <a class="nav-menu__item " (click)='onItemClick.emit("OPEN_COURSES")'>
+      <i class="icon-course"></i>
+      <p>My Courses</p>
+    </a>
+    <a routerLink='/courses' class="nav-menu__item">
+      <i class="icon-courseStore"></i>
+      <p>Course Store</p>
+    </a>
+  </div>
+  <div class="col">
+    <div class="nav-account" (click)="activeDropdown = !activeDropdown">
+      <img class="g-img__xs--light" [src]="currentUser.avatar">
+      <div *ngIf="currentUser">
+        <p>{{currentUser.first_name.charAt(0) + '. ' + currentUser.last_name}}</p>
+        <h6>{{currentUser.role | titlecase}} profile</h6>
+      </div>
+      <i class="icon-down"></i>
+    </div>
+  </div>
+</div>
+
+<div [class.active]="activeDropdown" class="nav-account__dropdown">
+  <a [routerLink]="['/profile']">
+    <!-- <i class="icon-people"></i> -->
+    <span>My Profile</span>
+  </a>
+  <a (click)='logout()'>
+    <!-- <i class="icon-door"></i> -->
+    <span>Log Out</span>
+  </a>
+</div>

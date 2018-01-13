@@ -1,0 +1,127 @@
+<section class="p-course container-fluid">
+
+  <!-- BANNER -->
+  <div class="row g-banner__course" [ngStyle]="{ 'background-image': 'url('+ course.avatar +')' }">
+    <img class="g-img__xl--dark" [src]="course.avatar" alt="">
+    <div class="g-banner__course__footer-title">
+      <h2>{{course.name}}</h2>
+      <h3>Course Code: {{course.code}}</h3>
+    </div>
+  </div>
+
+  <!-- TILES -->
+  <tiles class="row" [tiles]="dashTiles" (onSetTile)="onSetTileActive($event)"></tiles>
+
+  <div class="row g-semi-background">
+
+    <!-- UNITS -->
+    <div class="container p-course__units" *ngIf='dashViewMode === 0'>
+
+      <!-- UNITS TITLES/HEAD -->
+      <div class="row p-course__units--top">
+        <h1 class='col'>Course Materials</h1>
+        <div class="col-4">
+          <instu-search class="text-right" theme="light" (onType)='unitFilter.title = $event' label="Search course material"></instu-search>
+        </div>
+      </div>
+
+      <!-- UNITS EMPTY -->
+      <p class='row p-course__units--top' *ngIf='(!isTeacher && !units.length)'>0 {{course.structure_type | titlecase}}s</p>
+
+      <!-- UNITS -->
+      <div class="row p-course__units--body">
+
+        <!-- UNIT ADD FOR TEACHER -->
+        <div class="col-6 col-lg-4 mb-5" *ngIf='isTeacher'>
+          <div class="g-card">
+            <!-- CREATE UNIT BUTTON-->
+            <button class="g-tibtn-green__lg-default-default--right" *ngIf='!unit' (click)="newUnit()"><span>Create {{course.structure_type | titlecase}}</span><i class="icon-add"></i></button>
+            <!-- UNIT FORM-->
+            <ng-container *ngIf='unit'>
+              <image-uploader field='avatar' theme='light' view="circle" label="Avatar" [options]="avatarUploaderOptions" (fileUpdated)="unit.avatar = $event"></image-uploader>
+              <instu-input (onType)='unit.name = $event' [label]="course.structure_type + ' '+ (units.length+1)+' Name'" type="text" [required]="true"></instu-input>
+              <button class="g-btn-red__sm-default-default--light" type="button" (click)="unit = null">Reset</button>
+              <button class="g-btn-green__sm-default-default--light" type="button" (click)="createUnit();">Next</button>
+            </ng-container>
+          </div>
+        </div>
+
+        <!-- UNIT VIEW FOR ALL TYPE OF USERS -->
+        <div class="col-6 col-lg-4 mb-5" [ngStyle]="{ 'order':  (units.length - i)}" *ngFor="let unit of units, let i = index">
+          <div class="g-card" [ngClass]="{'deactivate': unit.status === 'locked' && user.role != 'teacher'}">
+            <i [ngClass]="'g-status-' + unit.status + '__md'"></i>
+            <img class='g-img__xl--light' [src]="unit.avatar ? unit.avatar : course.avatar " />
+            <h3>{{course.structure_type | titlecase}} {{i+1}}: {{unit.name}}</h3>
+            <button [disabled]="isLocked(unit.status)" class="g-btn-green__md-default-default--light" (click)='navigateToUnit(unit.id);' type="button">{{ isLocked(unit.status) ? 'Locked' : 'View ' + course.structure_type}}</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- GRADES -->
+    <div class="container p-course__grades" *ngIf='dashViewMode === 1'>
+      <div class="row p-dashboard__grades--top">
+        <div class="col-5">
+          <h1>Grades</h1>
+          <button class="g-btn-green__md-default-square--light" [class.active]="view.gradeType === 'diagram'" type="button" (click)='view.gradeType = "diagram"'> Diagram</button>
+          <button class="g-btn-yellow__md-default-square--light" [class.active]="view.gradeType === 'table'" type="button" (click)='view.gradeType = "table"'>Table</button>
+        </div>
+        <div class="col-7">
+          <div class="row">
+
+            <div class="col-xl-6">
+              <div class="g-meta">
+                <i class='icon-circle-yellow'></i>
+                <p>Minimum Pass Grade:</p>
+                <b>{{course.minimum_pass_grade | ceil}}%</b>
+              </div>
+            </div>
+
+            <div class="col-xl-6">
+              <div class="g-meta">
+                <i class='icon-circle-green'></i>
+                <p>Recommended Grade:</p>
+                <b>{{course.expecting_grade | ceil}}%</b>
+              </div>
+            </div>
+
+            <div class="col-xl-6" *ngIf='!isTeacher'>
+              <div class="g-meta">
+                <i class='icon-grade'></i>
+                <p>Current GPA:</p>
+                <b>{{gpa | ceil}}%</b>
+              </div>
+            </div>
+
+            <div class="col-xl-6">
+              <div class="g-meta">
+                <i class='icon-classAvarage'></i>
+                <p>Class Average</p>
+                <b>{{course.average_grade | ceil}}%</b>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <grades class='row' *ngIf="view.gradeType === 'diagram'" chartType='chart' chartStyle='areaColumn' [series]="courseGradeData"></grades>
+
+      <div class="row" *ngIf="view.gradeType === 'table'">
+        <div class="col-3 g-grade-table__card" *ngFor='let deliverable of courseTable; trackBy: trackByFn'>
+          <strong class="g-grade-table__card-head">{{deliverable.name}}</strong>
+          <div class="g-grade-table__card-item" *ngFor='let student of deliverable.data; trackBy: trackByFn;'>
+            <span>{{ student.name.first_name }} {{ student.name.last_name }}</span>
+            <span>{{ student.grade }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SETTINGS -->
+    <!-- <course-create *ngIf='dashViewMode === 2' [course]="course" (updated)="onUpdatedFromSettings($event)"></course-create> -->
+
+  </div>
+</section>

@@ -1,0 +1,36 @@
+image-uploader {
+    position: relative;
+    display : inline-block;
+    input {
+        display: none;
+    }
+
+    &[view="circle"] {
+        img {
+            cursor       : pointer;
+        }
+
+        label {
+            @include on-hover(0.2) {
+                visibility: visible !important;
+                opacity   : 1 !important;
+            };
+            position     : absolute;
+            z-index: z-index(default);
+            top          : 0;
+            left         : 0;
+            right        : 0;
+            width        : 150px;
+            height       : 150px;
+            margin       : 0 auto;
+            background   : rgba($black, 0.4);
+            border-radius: 50%;
+            visibility   : none !important;
+            opacity      : 0 !important;
+            text-align   : center;
+            line-height  : 9.2;
+            color        : $white;
+            @include transition(0.2);
+        }
+    }
+}

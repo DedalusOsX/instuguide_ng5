@@ -1,0 +1,36 @@
+:host {
+  color: $white;
+  height: 100%;
+  div, h2 {
+    text-transform: capitalize;
+  }
+  .todo-container {
+    .checkbox {
+      label {
+        &:before {
+          cursor: inherit;
+        }
+        width: 100%;
+      }
+      label, input {
+        cursor: inherit;
+      }
+    }
+  }
+  .objective {
+    list-style-position: inside;
+  }
+  .todo-progress {
+    > span {
+      &:first-child {
+        &.green-text {
+          font-weight: 700;
+        }
+      }
+      &:last-child {
+        color: $green;
+        font-weight: 700;
+      }
+    }
+  }
+}

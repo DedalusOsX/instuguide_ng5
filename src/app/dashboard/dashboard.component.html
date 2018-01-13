@@ -1,0 +1,76 @@
+<section class="container-fluid p-dashboard">
+
+  <!-- BANNER -->
+  <div class="row g-banner__profile" [ngStyle]="{ 'background-image': 'url('+ currentUser.background +')' }">
+    <img class="g-img__lg--light" [src]="currentUser.avatar">
+    <h2>{{ currentUser.first_name }} {{ currentUser.last_name }}</h2>
+    <p> {{ currentUser.organization || 'Organization Not Available'}} | {{ currentUser.department || 'Department Not Available'}} | {{ currentUser.position || 'Position Not Avaialble' }}</p>
+    <p>Email: {{ currentUser.email }}</p>
+    <a routerLink='/profile'><button class="g-btn-green__md-default-default--dark" type="button" name="button">View Profile</button></a>
+  </div>
+
+  <!-- TILES -->
+  <tiles [tiles]="dashTiles" (onSetTile)="onSetTileActive($event)"></tiles>
+
+  <div class="row g-semi-background">
+    <!-- COURSES -->
+    <div class="container p-dashboard__courses" *ngIf="view.mode === 0">
+
+      <!-- COURSES TITLE/HEAD -->
+      <div class="row p-dashboard__courses--top">
+        <h1 class="col">Current Courses</h1>
+        <div class="col-auto">
+          <button class="g-tibtn-green__lg-default-default--right" (click)="navigateToAddCourse()"><span>{{currentUser.role === 'student' ? 'Add' : 'Create'}} course</span><i class="icon-add"></i></button>
+        </div>
+      </div>
+
+      <!-- CURRENT COURSES -->
+      <div class="row p-dashboard__courses--body" *ngIf='!!(courses && courses.length)'>
+        <div class="col-6 col-sm-4 col-md-3 col-xl-2 mb-3 text-center" *ngFor="let course of courses; trackBy: trackByFn;">
+          <a class="g-course-thumbnail__xl" [ngStyle]="{ 'background-image': 'url('+ course.avatar +')' }" [routerLink]="['/courses/my', course.id]">
+            <div>
+              <h4>{{ course.code }}</h4>
+              <h6>click to view<br>the content</h6>
+            </div>
+          </a>
+          <p>{{ course.name }}</p>
+        </div>
+      </div>
+
+      <!-- EMPTY COURSES DEFAULT -->
+      <p class="row p-dashboard__courses--empty" *ngIf='(!courses || !courses.length)'>You've got 0 on-going courses.</p>
+
+    </div>
+
+    <!-- GRADES -->
+    <div class="container p-dashboard__grades" *ngIf="view.mode === 1">
+
+      <!-- GRADES TITLE/HEAD -->
+      <div class="row p-dashboard__grades--top">
+        <h1 class='col'>Grades</h1>
+        <div class="col-5" *ngIf='(gpaDynamicData.length || courseDynamicData.length)'>
+          <button class="g-btn-green__md-default-square--light" [ngClass]="{active: view.gradeType === 'gpa'}" type="button" (click)='view.gradeType = "gpa"'>GPA</button>
+          <button class="g-btn-yellow__md-default-square--light" [ngClass]="{active: view.gradeType === 'actual'}" type="button" (click)='view.gradeType = "actual"'>Actual</button>
+        </div>
+      </div>
+
+      <!-- CURRENT GRADES -->
+      <div class="row p-dashboard__grades--body" *ngIf='(gpaDynamicData.length || courseDynamicData.length)'>
+        <grades class='col-12' *ngIf="view.gradeType === 'gpa'" chartStyle='areaspline' chartType='chart' [series]="gpaDynamicData"></grades>
+        <grades class='col-12' *ngIf="view.gradeType === 'actual'" chartStyle='spline' chartType='chart' [series]="courseDynamicData"></grades>
+      </div>
+
+      <!-- EMPTY GRADES DEFAULT -->
+      <p class="row p-dashboard__courses--empty" *ngIf='!(gpaDynamicData.length || courseDynamicData.length)'>You've got 0 on-going grades.</p>
+
+    </div>
+
+
+    <!-- ANNOUNCEMENTS -->
+    <!--     <div *ngIf="view.mode === 3" class="container-fluid">
+        <div class="b-dashboard__inbox row">
+            <announcement></announcement>
+        </div>
+    </div> -->
+  </div>
+</section>

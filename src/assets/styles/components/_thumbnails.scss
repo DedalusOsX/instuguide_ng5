@@ -1,0 +1,61 @@
+$thumbnail-sizes: (
+    lg: (125px, 10px),
+    xl: (150px, 20px)
+);
+
+@mixin course-thumbnail($size, $margin) {
+    position           : relative;
+    display            : inline-block;
+    width              : $size;
+    height             : $size;
+    border-radius      : 50%;
+    margin             : 0 auto;
+    background-color: $white;
+    background-position: center;
+    background-size    : cover;
+    background-repeat  : no-repeat;
+    overflow           : hidden;
+    text-align         : center;
+
+    &:hover {
+        > div {
+            @include transform(rotateY, 0deg, ease all, 0.2);
+            @include backdrop-blur();
+        }
+    }
+
+    > div {
+        position     : absolute;
+        top          : 5px;
+        left         : 5px;
+        width        : $size - 10px;
+        height       : $size - 10px;
+        padding      : 8px 5px;
+        border-radius: 100%;
+        background   : rgba($black, 0.75);
+        color        : $white;
+        @include transform(rotateY, 90deg, ease all, 0.2);
+
+        h4 {
+            margin-top: $margin;
+        }
+
+        h6 {
+            width      : auto;
+            border-top : 1px solid;
+            padding-top: 10px;
+            margin     : 15px auto 0;
+        }
+    }
+
+    + p {
+        margin-top: 10px;
+        text-align: center;
+    }
+}
+
+@each $name, $value in $thumbnail-sizes {
+    .g-course-thumbnail__#{$name} {
+        @include course-thumbnail(nth($value,1),nth($value,2));
+    }
+}

@@ -1,0 +1,319 @@
+// -----------------------------------------------------------------------------
+// This file contains all buttons
+// -----------------------------------------------------------------------------
+////
+/// This is a group comment will create a new sidebar item in sassdoc.
+/// @group Buttons
+////
+$thickness: (
+    thin   : (40px, 14px, 1),
+    default: (50px, 14px, 1),
+    thick  : (60px, 14px, 1),
+);
+$width: (
+    xs  : 80px,
+    sm  : 120px,
+    md  : 150px,
+    lg  : 170px,
+    xl  : 200px,
+    auto: auto,
+    full: 100%,
+);
+$contour: (
+    square : 0,
+    default: 30px,
+    round  : 50%,
+);
+$icon-btton-sizes: (
+    sm: (30px, 10px),
+    md: (40px, 20px),
+    lg: (50px, 30px),
+);
+
+@mixin btn($width, $height, $font-size, $line-height, $border-radius, $border-color) {
+    @include on-event() {
+        outline: none;
+    };
+    display      : inline-block;
+    background   : transparent;
+    width        : $width;
+    height       : $height;
+    border       : 1px solid $border-color;
+    border-radius: $border-radius;
+    font-size    : $font-size;
+    line-height  : $line-height;
+    font-weight  : 300;
+    text-align   : center;
+
+    &[disabled] {
+        background  : $gray !important;
+        border-color: $gray !important;
+        color       : $primary !important;
+        @extend %disable-pointer;
+    }
+}
+
+@mixin ibtn($size, $font-size, $color) {
+
+    @include on-event() {
+        background  : $color;
+        border-color: $color;
+        outline     : none;
+
+        i {
+            color: $white;
+        }
+    }
+
+    display      : inline-block;
+    width        : $size;
+    height       : $size;
+    padding      : ($size - $font-size)/2;
+    border       : 1px solid;
+    border-radius: 50%;
+    background   : transparent;
+
+    i {
+        width    : $font-size - 2px;
+        height   : $font-size - 2px;
+        font-size: $font-size - 2px;
+    }
+
+    &[disabled] {
+        background  : $gray !important;
+        border-color: $gray !important;
+        color       : $primary !important;
+        @extend %disable-pointer;
+    }
+}
+
+@mixin status($color, $icon, $size, $font-size) {
+    display      : inline-block;
+    width        : $size !important;
+    height       : $size !important;
+    font-size    : $font-size !important;
+    padding      : ($size - $font-size)/2 !important;
+    border       : none;
+    border-radius: 50%;
+    background   : $color;
+    color        : $white;
+    @extend .icon-#{$icon};
+}
+
+@mixin tibtn($width, $height, $font-size, $line-height, $border-radius, $border-color) {
+    @include on-event() {
+        outline: none;
+    };
+    position     : relative;
+    display      : inline-block;
+    width        : $height;
+    height       : $height;
+    border       : 1px solid $border-color;
+    border-radius: 50%;
+    background   : transparent;
+    overflow     : hidden;
+    font-size    : $font-size;
+    font-weight  : 300;
+    line-height  : $line-height;
+    text-align   : center;
+    @include transition();
+
+    &[disabled] {
+        background  : $gray !important;
+        border-color: $gray !important;
+        color       : $primary !important;
+        @extend %disable-pointer;
+    }
+
+    span {
+        position   : absolute;
+        top        : ($height - 14px)/2;
+        white-space: nowrap;
+        color      : inherit !important;
+    }
+
+    i {
+        position: absolute;
+        top     : ($height - 14px)/2;
+        color   : inherit !important;
+    }
+
+    &:hover {
+        width        : $width;
+        border-radius: $border-radius;
+        @include transition();
+    }
+}
+
+@each $colorName, $color in $colors-map {
+
+    // general text buttons
+    @each $thicknessName, $y in $thickness {
+        @each $widthName, $x in $width {
+            @each $contourName, $radius in $contour {
+                .g-tibtn-#{$colorName}__#{$widthName}-#{$thicknessName}-#{$contourName} {
+                    &--left {
+                        @include tibtn($x, nth($y, 1), nth($y, 2), nth($y, 3), $radius, $color);
+
+                        &.active,
+                        &:active {
+                            background  : shade($color, 0.3);
+                            border-color: shade($color, 0.3);
+                        };
+
+                        background: $color;
+                        color     : $white;
+
+                        span {
+                            left: nth($y, 1);
+                        }
+
+                        i {
+                            left: (nth($y, 1) - 14px)/2;
+                        }
+                    }
+
+                    &--right {
+                        @include tibtn($x, nth($y, 1), nth($y, 2), nth($y, 3), $radius, $color);
+
+                        &.active,
+                        &:active {
+                            background  : shade($color, 0.3);
+                            border-color: shade($color, 0.3);
+                        };
+
+                        background: $color;
+                        color     : $white;
+
+                        span {
+                            right: nth($y, 1);
+                        }
+
+                        i {
+                            right: (nth($y, 1) - 14px)/2;
+                        }
+                    }
+                }
+
+                .g-btn-#{$colorName}__#{$widthName}-#{$thicknessName}-#{$contourName} {
+                    &--dark {
+                        @include btn($x, nth($y, 1), nth($y, 2), nth($y, 3), $radius, $color);
+
+                        &.active,
+                        &:hover {
+                            background: $color;
+                            cursor    : pointer;
+                            @include transition();
+                        }
+
+                        &:active {
+                            background  : shade($color, 0.3);
+                            border-color: shade($color, 0.3);
+                            @include transition();
+                        }
+                        color: $white;
+                    }
+
+                    &--light {
+                        @include btn($x, nth($y, 1), nth($y, 2), nth($y, 3), $radius, $color);
+
+                        &.active,
+                        &:hover {
+                            background: $color;
+                            color     : $white;
+                            cursor    : pointer;
+                            @include transition();
+                        }
+
+                        &:active {
+                            background  : shade($color, 0.3);
+                            border-color: shade($color, 0.3);
+                        }
+                        color: $color;
+                    }
+
+                    &--full {
+                        @include btn($x, nth($y, 1), nth($y, 2), nth($y, 3), $radius, $color);
+
+                        &.active,
+                        &:active {
+                            background  : shade($color, 0.3);
+                            border-color: shade($color, 0.3);
+                        };
+
+                        background: $color;
+                        color     : $white;
+                        @include on-hover(0.5);
+                    }
+
+                    &--hollow {
+                        @include btn($x, nth($y, 1), nth($y, 2), nth($y, 3), $radius, $color);
+
+                        &.active,
+                        &:active,
+                        &:hover {
+                            background: tint($gray, 0.8);
+                            cursor    : pointer;
+                        }
+                        border     : none;
+                        background : transparent;
+                        color      : $color;
+                        font-weight: 700;
+                    }
+                }
+            }
+        }
+    }
+    // circular icon buttons
+    @each $sizeName, $sizeValue in $icon-btton-sizes {
+        .g-ibtn-#{$colorName}__#{$sizeName}--light {
+            border-color: $color !important;
+            @include ibtn(nth($sizeValue, 1), nth($sizeValue, 2), $color);
+        }
+
+        .g-ibtn-#{$colorName}__#{$sizeName}--dark {
+            border-color: $white !important;
+            @include ibtn(nth($sizeValue, 1), nth($sizeValue, 2), $color);
+        }
+    }
+}
+
+// Status dependent elements
+@each $colorName, $color in $status-map {
+    @each $sizeName, $sizeValue in $icon-btton-sizes {
+        .g-status-#{$colorName}__#{$sizeName} {
+            @include status($color, $colorName, nth($sizeValue, 1), nth($sizeValue, 2));
+        }
+
+        .g-ibtn-#{$colorName}__#{$sizeName}--light {
+            @include on-event() {
+                background: $color;
+
+                i {
+                    color: $white;
+                }
+            }
+            border-color: $color !important;
+
+            i {
+                color: $color;
+            }
+
+            @include ibtn(nth($sizeValue, 1), nth($sizeValue, 2), $color);
+        }
+
+        .g-ibtn-#{$colorName}__#{$sizeName}--dark {
+            @include on-event() {
+                background: $color;
+            }
+            border-color: $color !important;
+
+            i {
+                color: $white;
+            }
+            @include ibtn(nth($sizeValue, 1), nth($sizeValue, 2), $color);
+
+        }
+
+    }
+}

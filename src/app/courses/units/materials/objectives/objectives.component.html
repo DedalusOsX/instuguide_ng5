@@ -1,0 +1,32 @@
+<section class="objectives container">
+  <div class="row">
+    <h2 class='mt-4 col-12'>{{material.name}}s</h2>
+    <div class='col-12 mb-2 objective' *ngFor="let objective of material.values; let i=index;">
+      <div class="row">
+        <div class="col-xl-7 col-lg-8 col-sm-12 d-flex align-items-center">
+          <div class='w-100'>
+            <h4 class='text-capitalize'>{{i+1}}. {{objective.name}}</h4>
+            <div class='ml-1 mb-1 mt-1 row' *ngFor='let todo of objective.todos; let j=index;'>
+              <div class="todo-container col-xl-7 col-md-9">
+                <div class="g-checkbox">
+                  <input disabled [id]='todo.type' class="form-check-input styled green"
+                         [checked]="todo.value.sum('status') === todo.value.length" type="checkbox" name="">
+                  <label [for]='todo.type'>complete {{todo.type}} <span
+                    *ngFor='let item of todo.value; let isLast=last;'>{{item.id}}{{isLast ? '' : ','}} </span></label>
+                </div>
+              </div>
+              <div class="todo-progress text-left col-xl-3 col-md-3">
+                <span [ngClass]="{'green-text': todo.value.sum('status') === todo.value.length}">{{ todo.value.sum('status') }}</span>
+                <span> / </span>
+                <span> {{ todo.value.length }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-5 col-lg-4 col-sm-12 d-flex justify-content-center align-items-center">
+          <!--                     <p-circle [data]="objective.todos" [options]="circleBarOptions"> </p-circle>
+           -->                </div>
+      </div>
+    </div>
+  </div>
+</section>

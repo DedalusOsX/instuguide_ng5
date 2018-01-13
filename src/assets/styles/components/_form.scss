@@ -1,0 +1,8 @@
+.g-form{
+    &__head{
+        border-radius: 5px;
+        padding: 10px;
+        margin: 15px 0;
+        background-color: tint($gray, 0.4);
+    }
+}

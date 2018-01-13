@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;" xml:space="preserve">
+<g id="clock">
+	<path d="M250,10C118,10,10,118,10,250s108,240,240,240s240-108,240-240S382,10,250,10z M403,403c-41,41-95,64-153,64l0,0
+		c-120,0-217-97-217-217S130,33,250,33s217,97,217,217C467,308,444,362,403,403z"/>
+	<path d="M263,88c-6,0-11,5-11,12v153H115c-3,0-6,2-8,4s-3,5-3,8c0,6,5,10,10,11h148c6,0,11-5,11-12V99C274,93,269,88,263,88z"/>
+</g>
+</svg>

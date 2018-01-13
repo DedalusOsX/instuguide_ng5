@@ -1,0 +1,130 @@
+<section class="b-inbox row">
+  <div class="b-inbox__content w-100">
+    <div class="b-inbox__courses-block g-customgrid__mini-sidebar">
+      <div class="b-inbox__courses d-flex flex-column justify-content-start align-items-center h-100 pt-4 pb-4 text-center">
+
+        <ul class="d-flex flex-column list-unstyled clearfix">
+          <li *ngFor='let course of courses.data, let i = index' (click)="onSetActiveCourse(i)" [ngClass]="{'active': activeCourse && activeCourse.id === course.id}" class="vertical-slider__item">
+            <div class="vertical-slider__item-img">
+              <img [src]="course.image">
+              <div *ngIf="course.notificationsCount" class="g-notifier">
+                {{ course.notificationsCount }}
+              </div>
+            </div>
+            <div><span>{{course.name}}</span></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="b-inbox__messages-block g-customgrid__sidebar">
+      <div class="b-inbox__bg h-100 w-100" style="background: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)), url('https://www.planwallpaper.com/static/images/kartandtinki1_photo-wallpapers_02.jpg') center/cover no-repeat no-repeat fixed ;"></div>
+      <div class='b-inbox__filters'>
+        <div class="d-flex align-items-center justify-content-end mt-4 g-search">
+          <div class="g-search__input col-12">
+            <input type="text" placeholder="Search" class="float-right form-control">
+          </div>
+        </div>
+        <div class="col-12 mt-5">
+          <div class="row">
+            <div class="col-3">
+              <p>Filter: </p>
+            </div>
+            <div class="col-9 text-right">
+              <div ngbDropdown class="d-inline-block light">
+                <button type='button' class="btn g-btn__md text-capitalize g-btn__dropdown g-btn g-btn-navi" id="dropdownMenuLink" ngbDropdownToggle>
+                  {{ sortTypes.data[sortTypes.selected] }}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <a *ngFor="let sort of sortTypes.data; let i = index" (click)="filterByType(i)" class="dropdown-item" href="javascript:;">
+                    {{ sort }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="b-inbox__messages">
+        <div *ngFor="let announcement of filteredAnnouncements | groupBy:'read'">
+          <div class="b-inbox__messages-block_item-type pl-2 mt-3">
+            <h5>{{announcement.key == 1 ? 'Read' : 'Unread' }}: {{ announcement.value.length }}</h5>
+          </div>
+          <div *ngFor="let message of announcement.value" (click)="onSetActiveAnnouncement(message)" [ngClass]="{active: activeAnnouncement && activeAnnouncement.id == message.id}" class="col-12 b-inbox__messages-block_item">
+            <div class="row align-items-center">
+              <div class="col-3">
+                <img [src]="message.avatar" alt="" class="img-fluid">
+              </div>
+              <div class="col-6 b-inbox__messages-block_item-meta">
+                <p><b>{{ message.from }}</b>
+                  <br>{{ message.subject }}</p>
+              </div>
+              <div class="col-3">
+                <p>{{ message.date | date:'MMM dd HH:mm' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="g-customgrid__body">
+      <div *ngIf="activeAnnouncement">
+        <div class="b-announcement__body row">
+          <div class="col-3">
+            <img [src]="activeAnnouncement.avatar" class="img-fluid">
+          </div>
+          <div class="col-6">
+            <div class="b-announcement__body--meta">
+              <strong>From:</strong>
+              <span>{{ activeAnnouncement.from }}</span>
+            </div>
+            <div class="b-announcement__body--meta">
+              <strong>To:</strong>
+              <span>{{ activeAnnouncement.to }}</span>
+            </div>
+            <div class="b-announcement__body--meta">
+              <strong>Sent:</strong>
+              <span>{{ activeAnnouncement.date | date:'MMMM dd, HH:mm a' }}  ({{ activeAnnouncement.date | timeAgo }})</span>
+            </div>
+            <div class="b-announcement__body-content mt-3">
+              <div class="b-announcement__body-content--text">
+                <h4>{{ activeAnnouncement.subject }}</h4>
+                <div [innerHTML]="activeAnnouncement.text"></div>
+              </div>
+              <div *ngIf="activeAnnouncement.attachments.length" class="b-announcement__body-content--attachments">
+
+                <p class="lead">
+                  <i class="icon-Attachment"></i> Attachments ({{ activeAnnouncement.attachments.length }} files, {{ activeAnnouncement.attachments.sum('size') | fileSize }} )
+                </p>
+                <ul class="list-unstyled">
+                  <li *ngFor="let attachment of activeAnnouncement.attachments; trackBy: trackByFn">
+                    <a [href]="attachment.file">
+                      <i class="icon-Attachment"></i> {{ attachment.name }} ({{ attachment.size | fileSize }})
+                    </a>
+
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-3">
+            <div class="b-announcement__body--actions">
+              <ul class="list-unstyled">
+                <li>
+                  <a href="javascript:;"><i class="icon-Reply"></i>Reply</a>
+                </li>
+                <li>
+                  <a href="javascript:;"><i class="icon-Forward"></i>Forward</a>
+                </li>
+                <li>
+                  <a href="javascript:;"><i class="icon-PlayButton"></i>Delete</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

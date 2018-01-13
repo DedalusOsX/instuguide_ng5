@@ -1,0 +1,71 @@
+<busy-loader [loading]="busy"></busy-loader>
+<div class="container-fluid p-auth g-fullheight">
+  <div class="row">
+
+    <video playsinline autoplay muted loop poster="/assets/images/home/main.png">
+      <source src="/assets/video/animation.mp4" type="video/mp4">
+    </video>
+
+    <div class="col-sm-6 p-auth__title">
+      <div>
+          <h1>InstuGuide</h1>
+          <h3 class="fw-3">Evolutionary Educational Platform</h3>
+      </div>
+    </div>
+
+    <div class="col-sm-6 p-auth__main g-theme-light">
+
+      <button type='button' *ngIf="view.mode === 'login'" class="g-btn-blue-light__md-default-default--light" (click)="view.mode = 'signup'">Sign Up</button>
+      <button type='button' *ngIf="view.mode === 'signup'" class="g-btn-blue-light__md-default-default--light" (click)="view.mode = 'login'">Log In</button>
+      <i class="icon-logo"></i>
+      <alert *ngIf="error" [errorResponse]="error"></alert>
+      <!-- Sign In Form -->
+
+      <form class="row" *ngIf="view.mode ==='login'" #loginForm="ngForm" (submit)="tryToLogin($event)" novalidate>
+        <div class="col-12 col-xl-6">
+          <instu-input (onType)='userFormLogin.email = $event' label="Email" type="email" [required]="true"></instu-input>
+        </div>
+        <div class="col-12 col-xl-6">
+          <instu-input (onType)='userFormLogin.password = $event' label="Password" type="password" [required]="true"></instu-input>
+        </div>
+        <div class="col-12">
+          <button type='submit' class="g-btn-green__md-default-default--full">Log In</button>
+        </div>
+      </form>
+
+      <!-- Sign Up Form -->
+      <form class="row" *ngIf="view.mode ==='signup'" #signupForm="ngForm" (submit)="tryToSignup($event)" novalidate>
+        <div class="col-12 col-xl-6">
+          <instu-input (onType)='userFormSignup.first_name = $event' label="First Name" [required]="true"></instu-input>
+        </div>
+        <div class="col-12 col-xl-6">
+          <instu-input (onType)='userFormSignup.last_name = $event' label="Last Name" [required]="true"></instu-input>
+        </div>
+        <div class="col-12 col-xl-6">
+          <instu-input (onType)='userFormSignup.email = $event' label="Email" type="email" [required]="true"></instu-input>
+        </div>
+        <div class="col-12 col-xl-6">
+          <instu-dropdown (valueUpdated)='userFormSignup.gender = $event' [default]="false" [data]="['female', 'male']" label="Your gender" [required]="true"></instu-dropdown>
+        </div>
+        <div class="col-12 col-xl-6">
+          <instu-dropdown (valueUpdated)='userFormSignup.role = $event' [default]="false" [data]="['student', 'teacher']" label="Account type" [required]="true">
+          </instu-dropdown>
+        </div>
+        <div class="col-12 col-xl-6">
+          <instu-dropdown (valueUpdated)='userFormSignup.language = $event' [default]="false" [data]="languages" propValue="code" propLabel="label" label="Language" [required]="true">
+          </instu-dropdown>
+        </div>
+        <div class="col-12 col-xl-6">
+            <instu-input (onType)='userFormSignup.password = $event' label="Password" type="password" [required]="true"></instu-input>
+          </div>
+          <div class="col-12 col-xl-6">
+            <instu-input (onType)='userFormSignup.confirm_password = $event' label="Confirm password" type="password" [required]="true"></instu-input>
+          </div>
+        <div class="col-12">
+          <button type="submit" class="g-btn-green__md-default-default--full mv-3">Sign up</button>
+        </div>
+      </form>
+      <footer></footer>
+    </div>
+  </div>
+</div>

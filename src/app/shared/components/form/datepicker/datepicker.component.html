@@ -1,0 +1,27 @@
+<instu-input (click)='opened = true; initCalendar();' type="text" [label]='label' [value]="dateModel | date: 'MMMM d, y'" readonly='true' required='true'></instu-input>
+<div [class.active]='opened' class="g-datepicker">
+  <div class="g-datepicker__current">
+    <p>{{selectedDate | date: 'MMMM d, y'}}</p>
+    <h1>{{selectedDate | date: 'EEEE'}}</h1>
+  </div>
+  <div class='g-datepicker__controller'>
+    <i class='icon-left' (click)='changeMonth(-1)'></i>
+    <span>{{ currentDate | date: 'y MMMM' }}</span>
+    <i class='icon-right' (click)='changeMonth(1)'></i>
+  </div>
+  <div class='g-datepicker__body'>
+    <span class='g-datepicker__body-weekday'>S</span>
+    <span class='g-datepicker__body-weekday'>M</span>
+    <span class='g-datepicker__body-weekday'>T</span>
+    <span class='g-datepicker__body-weekday'>W</span>
+    <span class='g-datepicker__body-weekday'>T</span>
+    <span class='g-datepicker__body-weekday'>F</span>
+    <span class='g-datepicker__body-weekday'>S</span>
+    <span class='g-datepicker__body-day' *ngFor="let day of currentDate.currentMonth; trackBy:trackByFn" (click)='selectDay(day[0])' [class.passive]='day[1] === "p"' [class.active]='isSelectedDay(day[0])'>
+      {{day[0] | date: 'd'}}
+    </span>
+    <div class="w-100"></div>
+    <button class="g-btn-green__xs-default-square--hollow" type="submit" name="button" (click)="confirmDay()">OK</button>
+    <button class="g-btn-blue__xs-default-square--hollow" type="reset" name="button" (click)="opened = false">CANCEL</button>
+  </div>
+</div>

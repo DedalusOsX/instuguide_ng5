@@ -1,0 +1,12 @@
+
+  <!-- TODO: Required only applies on the first element -->
+<ng-container *ngIf='!iconGroup'>
+  <instu-input *ngFor="let value of data; let i = index; let last = last; trackBy: trackByFn" (onType)='data[i] = $event' [value]="value" (onFocus)="onFocus(i);" (onBlur)="onBlur(i);" [label]="label +  ' #' + (i+1)" [required]="required"></instu-input>
+</ng-container>
+
+<ng-container *ngIf='iconGroup'>
+  <div class='g-input-group' *ngFor="let value of data; let i = index; let last = last; trackBy: trackByFn">
+    <i [class]="'icon-' + iconGroup"></i>
+    <instu-input (onType)='data[i] = $event' (onFocus)="onFocus(i);"(onBlur)="onBlur(i);" [label]="label +  ' #' + (i+1)" [value]="value" [required]="required"></instu-input>
+  </div>
+</ng-container>

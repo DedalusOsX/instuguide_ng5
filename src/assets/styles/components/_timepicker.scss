@@ -1,0 +1,48 @@
+timepicker {
+    position: relative;
+    display : inline-block;
+    width   : 100%;
+
+    .icon-clock {
+        display: inline-block !important;
+    }
+
+    > div {
+        @include on-input() {
+            height : 100px;
+            padding: 0 20px;
+            @include shadow();
+        };
+        position  : absolute;
+        z-index   : z-index(absolutef);
+        top       : 48px;
+        height    : 0;
+        width     : 100%;
+        background: $white;
+        overflow  : hidden;
+        color     : $primary;
+        @include flexbox(space-around,center);
+        @include transition();
+
+        > div {
+            @include flexbox(center,center,column,wrap);
+        }
+
+        p {
+            padding: 5px;
+        }
+
+        i {
+            @include on-hover() {
+                background-color: $green;
+                color           : $white;
+            };
+            display      : block;
+            width        : 30px !important;
+            height       : 30px !important;
+            padding      : 8px;
+            border-radius: 50%;
+            text-align   : center;
+        }
+    }
+}

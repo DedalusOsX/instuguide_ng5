@@ -1,0 +1,81 @@
+tiles {
+    @extend .row;
+    @include flexbox();
+    height: 150px;
+
+    .g-tile__item {
+        position  : relative;
+        width     : 175px;
+        height    : 100%;
+        padding   : 0 30px;
+        text-align: center;
+        filter: grayscale(100%);
+
+        @include on-active() {
+            @include borderHorizontalCollapse(1px, tint($gray, 0.3));
+            filter: grayscale(0);
+
+            &:before {
+                content          : '';
+                position         : absolute;
+                z-index          : z-index(absolute);
+                bottom           : -15px;
+                left             : 0;
+                right            : 0;
+                width            : 30px;
+                height           : 30px;
+                margin           : 0 auto;
+                background       : $white;
+                transform        : rotate(45deg);
+                -ms-transform    : rotate(45deg);
+                -webkit-transform: rotate(45deg);
+            }
+        }
+
+        @include on-hover() {
+            filter: grayscale(0);
+        }
+
+        //This part defines icon box behaviour on interaction
+
+        //This part defines tile icon box
+        img {
+            position     : relative;
+            display      : inline-block;
+            width        : 60px;
+            height       : 60px;
+            border-radius: 10px;
+            margin-top   : 28px;
+            background   : tint($gray, 0.3);
+            font-size    : 30px;
+
+            &:before {
+                top: 15px;
+            }
+
+            //This part defines notificationc circle styles
+            span {
+                position     : absolute;
+                top          : -10px;
+                right        : -10px;
+                width        : 20px;
+                height       : 20px;
+                border-radius: 50%;
+                background   : $red;
+                font-size    : 12px;
+                font-weight  : 500;
+                line-height  : 1.6;
+                color        : #ffffff;
+            }
+
+            @include transition();
+        }
+
+        //This part defines underlying text
+        p {
+            margin-top    : 5px;
+            text-align    : center;
+            text-transform: capitalize;
+        }
+    }
+}

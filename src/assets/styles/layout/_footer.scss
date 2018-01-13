@@ -1,0 +1,25 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the footer of the site/application.
+// -----------------------------------------------------------------------------
+
+footer {
+    display   : block;
+    background: $white;
+    padding   : 20px 0;
+    text-align: center;
+
+    //footer social icons styling
+    a {
+        height          : 30px !important;
+        width           : 30px !important;
+        border-radius   : 50%;
+        margin          : 10px 5px 0;
+        background-color: $primary;
+        color           : $white !important;
+        text-align      : center;
+
+        &:before {
+            top: 8px;
+        }
+    }
+}

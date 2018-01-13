@@ -1,0 +1,93 @@
+datepicker {
+    position: relative;
+    display : inline-block;
+    width   : 100%;
+
+    .icon-calendar {
+        display: inline-block !important;
+    }
+
+    .g-datepicker {
+        @include on-input() {
+            max-height: 600px;
+            @include shadow();
+        }
+        position        : absolute;
+        top             : 48px;
+        right           : 0;
+        z-index         : z-index(absolutef);
+        max-height      : 0;
+        width           : 320px;
+        border-radius   : 0 0 5px 5px;
+        overflow        : hidden;
+        background-color: $white;
+
+        &__current {
+            height          : 80px;
+            padding         : 5px 15px;
+            background-color: shade($gray, 0.6);
+            color           : $white;
+
+            p {
+                margin-top: 5px;
+                color     : inherit;
+                opacity   : 0.6;
+            }
+
+            h1 {
+                margin-top: 5px;
+                font-size : 30px;
+                color     : inherit;
+            }
+        }
+
+        &__controller {
+            @include flexbox(space-between,center,row,wrap);
+            padding: 15px;
+            height : auto;
+        }
+
+        &__body {
+            width: 100%;
+            text-align: center;
+            padding: 0 6px;
+
+            &-weekday {
+                float    : left;
+                color      : shade($gray, 0.3);
+                width      : 44px;
+                height     : 44px;
+                padding    : 8px;
+                font-weight: 300;
+                line-height: 1.8;
+                text-align : center;
+            }
+
+            &-day {
+                float      : left;
+                border-radius: 50%;
+                height       : 44px;
+                width        : 44px;
+                padding      : 8px;
+                font-weight  : 300;
+                line-height  : 1.8;
+                text-align   : center;
+                @include transition();
+
+                @include on-event() {
+                    background-color: $green;
+                    color           : $white;
+                }
+
+                &.passive {
+                    color: $gray;
+                }
+            }
+
+            button {
+                float : right;
+                margin: 10px;
+            }
+        }
+    }
+}

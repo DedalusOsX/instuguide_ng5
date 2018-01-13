@@ -1,0 +1,286 @@
+//if input has an external icon it is wrapped in g-input-group with the styling below;
+
+.g-input-group {
+    width: 100%;
+
+    > i {
+        width    : 24px;
+        height   : 24px;
+        margin   : 18px 16px 0 0;
+        float    : left;
+        font-size: 24px;
+    }
+
+    > datepicker,
+     > instu-dropdown,
+     > instu-input,
+     > instu-textarea,
+     > timepicker,
+    > dropdown {
+        width: calc(100% - 40px);
+        float: left;
+    }
+}
+//input placeholder styling for default and activated states
+
+%input-placeholder {
+    &-default {
+        position      : absolute;
+        top           : 12px;
+        left          : 0;
+        z-index       : z-index(absolute);
+        width         : calc(100% - 25px);
+        height        : calc(100% - 16px);
+        font-size     : 16px;
+        opacity       : 0.5;
+        line-height   : 2.2;
+        text-transform: capitalize;
+        white-space   : nowrap;
+        overflow      : hidden;
+        text-overflow : ellipsis;
+        @include on-hover();
+        @include transition();
+
+        span:first-child {
+            display   : inline-block;
+            opacity   : 0;
+            visibility: hidden;
+        }
+    }
+
+    &-active {
+        top        : 0;
+        height     : 12px;
+        opacity    : 1;
+        font-size  : 12px;
+        line-height: 1;
+        @include transition();
+
+        span:first-child {
+            width: 0;
+        }
+    }
+}
+
+instu-input {
+    @include on-hover() {
+        > div {
+            border-color: $primary;
+        }
+    }
+    position     : relative;
+    width        : 100%;
+    padding      : 12px 0 4px;
+    margin-bottom: 15px;
+    font-family  : $font-roboto;
+    font-size    : 16px;
+    line-height  : 1;
+    text-align   : left;
+    @include flexbox();
+
+    label {
+        @extend %input-placeholder-default;
+    }
+
+    input {
+        //input activation styling
+        @include on-input() {
+            outline     : none;
+            border-color: $green;
+            caret-color : $green;
+
+            ~ label {
+                color: $green;
+                @extend %input-placeholder-active;
+            }
+
+            ~ div {
+                &:before {
+                    width: 50%;
+                    @include transition();
+                }
+
+                &:after {
+                    width: 50%;
+                    @include transition();
+                }
+            }
+        }
+        display   : inline-block;
+        width     : 100%;
+        padding   : 8px 0;
+        border    : none;
+        background: transparent;
+
+        //input prefix/suffix/icon styling
+        ~ i,
+        ~ span {
+            float: right;
+        }
+        //input validations styling
+        &.ng {
+            &-untouched {
+                &.ng {
+                    &-valid {
+                        &:not(.input-empty) {
+                            ~ label {
+                                @extend %input-placeholder-active;
+                            }
+                        }
+                    }
+
+                    &-invalid {
+                        ~ label {
+                            color: $primary;
+                        }
+
+                        ~ div {
+                            border-color: $gray;
+
+                            span {
+                                color: $primary;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &-touched {
+                &.ng {
+                    &-valid {
+                        &:not(.input-empty) {
+                            ~ label {
+                                @extend %input-placeholder-active;
+                            }
+                        }
+
+                        ~div {
+                            span {
+                                color: $green;
+                            }
+                        }
+                    }
+
+                    &-invalid {
+                        ~ label {
+                            color: $red;
+                        }
+
+                        ~ div {
+                            border-color: $red;
+
+                            span {
+                                color: $red;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        @include on-hover();
+    }
+
+    > span {
+        opacity    : 0.5;
+        line-height: 2.2;
+
+        &:first-child {
+            margin-right: 4px;
+        }
+    }
+    //input suffix icon styling
+    i {
+        position: absolute !important;
+        right   : 0;
+        display : inline-block;
+
+        &.icon-view {
+            top      : 16px;
+            width    : 25px;
+            height   : 25px;
+            font-size: 25px;
+        }
+
+        &.icon-calendar,
+        &.icon-clock {
+            top      : 16px;
+            display  : none;
+            width    : 25px;
+            height   : 25px;
+            font-size: 25px;
+        }
+
+        &.icon-down {
+            top      : 24px;
+            display  : none;
+            width    : 13px;
+            height   : 13px;
+            font-size: 13px;
+        }
+    }
+    //input error/helper shell styling
+    > div {
+        position   : relative;
+        @include flexbox();
+        width      : 100%;
+        height     : 20px;
+        border-top : 2px solid $gray;
+        padding-top: 4px;
+        //input bottom border styling
+        &:before {
+            content         : '';
+            position        : absolute;
+            z-index         : z-index(absoulte);
+            top             : -2px;
+            right           : 50%;
+            height          : 2px;
+            width           : 0;
+            background-color: $green;
+            @include transition();
+        }
+
+        &:after {
+            content         : '';
+            position        : absolute;
+            z-index         : z-index(absoulte);
+            top             : -2px;
+            left            : 50%;
+            height          : 2px;
+            width           : 0;
+            background-color: $green;
+            @include transition();
+        }
+        //input helper/error styling
+        span {
+            font-size: 12px;
+
+            &:not(.helper-right) {
+                flex-basis   : 0;
+                flex-grow    : 1;
+                padding-right: 15px;
+                overflow     : hidden;
+                text-overflow: ellipsis;
+                white-space  : nowrap;
+            }
+
+            &.helper-right {
+                margin-left: auto;
+                font-weight: 700;
+            }
+        }
+    }
+
+    &[highlighted] {
+        background: $gray;
+    }
+
+    &[disabled] {}
+}
+
+// Hide number input arrows
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}

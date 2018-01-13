@@ -1,0 +1,4 @@
+<a class="sidebar-item" [routerLink]="['/courses/my', course.id]" *ngFor="let course of courses">
+  <img class="g-img__sm--dark" [src]="course.avatar" alt="">
+  <p>{{ course.code }}</p>
+</a>

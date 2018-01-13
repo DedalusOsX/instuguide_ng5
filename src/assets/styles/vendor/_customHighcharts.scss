@@ -1,0 +1,25 @@
+.highcharts {
+    &-tooltip span {
+        overflow     : hidden;
+        text-overflow: ellipsis;
+        font-weight  : 400;
+        font-size    : 14px;
+        text-align   : center;
+        width        : 128px;
+        height       : 61px;
+    }
+}
+
+    .b-chart,.g-grade-bar {
+
+    .row{
+        margin: 0;
+        flex-direction: row;
+        overflow: hidden;
+    }
+    chart{
+        overflow: hidden;
+        flex-basis: 0;
+        flex-grow: 1;
+    }
+}

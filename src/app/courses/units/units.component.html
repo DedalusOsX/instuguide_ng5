@@ -1,0 +1,98 @@
+<!-- SIDEBAR -->
+<div class="g-app-grid__sidebar">
+  <h4>{{unitType | titlecase}}s</h4>
+  <div *ngFor='let item of units, let i = index; trackBy: trackByFn'>
+    <button [class.active]="selectedUnit === i" [ngClass]="'g-ibtn-' + item.status + '__md--dark'" (click)="navigateToUnit(item.id);" [disabled]="isLocked(item.status)">
+      <i [ngClass]="'icon-' + item.status"></i>
+    </button>
+    <p>{{unitType | titlecase}} {{i + 1}}</p>
+  </div>
+</div>
+
+<!-- MENU -->
+<div class="g-app-grid__menu" [ngStyle]="{'background-image': 'url(' + unit.avatar + ')'}">
+
+  <!-- SETTINGS -->
+  <div class="b-unit__settings" [class.active]="view.settings" *ngIf='teacher'>
+    <i class="icon-close" (click)="view.settings = false"></i>
+    <h4>Unit Settings</h4>
+    <image-uploader field='avatar' view="circle" theme='light' label="Avatar" [options]="avatarUploaderOptions" (fileUpdated)="updateUnit('avatar', $event._file)"></image-uploader>
+    <div class="col-12">
+      <instu-input (onBlur)="updateUnit('name', $event)" label="Unit name" [min]="1" [value]="unit.name"></instu-input>
+    </div>
+    <div class="b-unit__settings--status">
+      <div>
+        <button class="g-ibtn-locked__md--light" [class.active]="unit.status === 'locked'" (click)="updateUnit('status', 'locked')">
+          <i class="icon-locked"></i>
+        </button>
+        <p>Locked</p>
+      </div>
+      <div>
+        <button class="g-ibtn-pending__md--light" [class.active]="unit.status === 'pending'" (click)="updateUnit('status', 'pending')">
+          <i class="icon-pending"></i>
+        </button>
+        <p>Pending</p>
+      </div>
+      <div>
+        <button class="g-ibtn-completed__md--light" [class.active]="unit.status === 'completed'" (click)="updateUnit('status', 'completed')">
+          <i class="icon-completed"></i>
+        </button>
+        <p>Completed</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- <instu-search class="text-center" theme="dark" label="Search a material" (onType)='unitFilter.title = $event'></instu-search> -->
+
+  <h3>{{unitType | titlecase}} {{selectedUnit + 1}}: {{unit.name}} <i class="icon-settings" *ngIf='teacher' (click)="view.settings = true"></i></h3>
+
+  <!-- MATERIALS -->
+  <div class="g-app-grid__menu-item" [class.active]="selectedMaterial === i" *ngFor="let material of unit.materials; let i = index; trackBy: trackByFn;" (click)="setMaterial(i)">
+    <h3>{{material.type.charAt(0)}}</h3>
+    <div>
+      <p>{{material.name || material.note || ((material.type | translate) + ' ' + material.index)}}</p>
+      <span>{{ !(material.name || material.note) ? '' : (material.type | translate) + ' ' + material.index}}</span>
+    </div>
+    <div>
+      <p>{{material.created_at | date: 'MMM d'}}</p>
+      <span>{{material.created_at | date: 'HH:mm'}}</span>
+    </div>
+    <button class="g-ibtn-red__md--light active" *ngIf='!material.id' (click)="removeMaterial(i)"><i class="icon-add"></i></button>
+  </div>
+
+  <!-- CREATE MATERIAL -->
+  <div class="b-unit__material-add-dropdown" *ngIf="teacher" (click)="view.materialNew = !view.materialNew">
+    <i class="icon-add"></i>
+    <span>Create New Material</span>
+    <i class="icon-down"></i>
+    <ul [class.active]='view.materialNew'>
+      <li *ngFor='let value of materialTypes; let i = index; trackBy: trackByFn;' (click)='createMaterial(value)'>{{ value }}</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- BODY -->
+<div class="g-app-grid__body">
+
+  <!-- BODY NAVBAR -->
+  <div class='g-app-grid__body-nav'>
+    <a [routerLink]="['/courses/my', course.id]">
+      <i class='icon-return'></i>
+      <p>Return</p>
+    </a>
+    <div (click)="toggleFullScreen()">
+      <i class="icon-expand"></i>
+      <p>Expand</p>
+    </div>
+  </div>
+
+  <!-- BODY MAIN -->
+  <div class='g-app-grid__body-main b-unit__material-empty' *ngIf="view.material === 'default'">
+    <i class="icon-inboxTray"></i>
+    <h1>this {{unitType}} is empty</h1>
+  </div>
+  <lesson class='g-app-grid__body-main' *ngIf="['lesson', 'lecture', 'class', 'tutorial'].includes(view.material)" [unit]="unit" [material]="material" (updated)="onUpdatedFromMaterial($event)"></lesson>
+  <assignment class='g-app-grid__body-main' *ngIf="['assignment', 'test', 'midterm', 'final_exam'].includes(view.material)" [unit]="unit" [material]="material" [studentList]="course.subscribers" [gradeWeights]="course.grade_distribution" [usedWeight]="course.used_grades"
+      [courseDeadline]="course.end_date" (updated)="onUpdatedFromMaterial($event)"></assignment>
+</div>

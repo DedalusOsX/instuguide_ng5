@@ -1,0 +1,26 @@
+<!-- PREFIX-->
+<span *ngIf="prefix">{{prefix}}</span>
+
+<!-- BODY-->
+<input [type]="type" [formControl]="input" (focus)="onFocus.emit()" (input)="onChange(input.value)" (blur)="onBlur.emit(input.value)" [id]="field" [name]='field' [readonly]="readonly" [ngClass]="{'input-empty': input.value == undefined}" />
+
+<label [for]="field">
+    <span>{{prefix}}</span><span translate>{{label}}{{required ? '' : ' (optional)'}}</span>
+</label>
+
+<!-- SUFFIX-->
+<span>{{suffix}}</span>
+
+<!-- END ICONS -->
+<i *ngIf="tmpType === 'password'" class="icon-view" (click)="togglePassword()"></i>
+<i class="icon-down"></i>
+<i class="icon-calendar"></i>
+<i class="icon-clock"></i>
+
+<!-- FOOTER - ERRORS & HELPERS -->
+<div>
+  <span *ngIf="!error && required && input.value">Complete</span>
+  <span *ngIf="!error && required && input.dirty && !input.value">{{label}} field is required</span>
+  <span *ngIf="error">{{error ? error : helper}}</span>
+  <span *ngIf="max" class="helper-right">{{input.value ? input.value + '/' + max : '0' + '/' + max}}</span>
+</div>

@@ -1,0 +1,69 @@
+// -----------------------------------------------------------------------------
+// When having several themes, this file contains everything related to the
+// default one.
+// -----------------------------------------------------------------------------
+
+.g-theme-dark {
+    @include theme-typography() {
+        color: $white;
+    }
+
+    .g-input {
+        color: $white;
+
+        ~ label {
+            color: $white;
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the navbar of the site/application.
+// -----------------------------------------------------------------------------
+
+$blurColor: $black;
+@supports (backdrop-filter: blur(5px)) or (-webkit-backdrop-filter: blur(5px)) {
+    .nav {
+        background: rgba($blurColor, 0.8);
+        color: $white;
+        @include backdrop-blur();
+        @include shadow(0, 0, 0, 0);
+        &-menu__item {
+            @include on-hover() {
+                background: shade($gray, 0.8);
+            }
+        }
+        &-account {
+            @include on-hover() {
+                background: shade($gray, 0.8);
+            }
+            &__dropdown {
+                background: rgba($blurColor, 0.8);
+                @include backdrop-blur();
+                &.active{
+                    @include shadow(0, 0, 0, 0);
+                }
+                a {
+                    @include on-hover() {
+                        background: shade($gray, 0.8);
+                    }
+                }
+            }
+        }
+    }
+    .p-course-info__banner {
+        &-sidebar {
+            @include backdrop-blur();
+        }
+        &-main {
+            >div {
+                @include backdrop-blur();
+            }
+        }
+    }
+    .p-home-navbar{
+        background: rgba($blurColor, 0.4);
+        @include backdrop-blur(10);
+    }
+}
+

@@ -1,27 +1,288 @@
 # instuguide_ng5
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.4.
+### Quick start
+**Make sure you have Node version >= 6.0 and NPM >= 3**
 
-## Development server
+# Table of Contents
+* [File Structure](#file-structure)
+* [Getting Started](#getting-started)
+    * [Dependencies](#dependencies)
+    * [Installing](#installing)
+    * [Running the app](#running-the-app)
+* [Configuration](#configuration)
+* [AoT Don'ts](#aot-donts)
+* [External Stylesheets](#external-stylesheets)
+* [Contributing](#contributing)
+* [TypeScript](#typescript)
+* [@Types](#types)
+* [Frequently asked questions](#frequently-asked-questions)
+* [Support, Questions, or Feedback](#support-questions-or-feedback)
+* [Deployment](#deployment)
+* [License](#license)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+# Getting Started
+## Dependencies
+What you need to run this app:
+* `node` and `npm` (`brew install node`)
+* Ensure you're running the latest versions Node `v6.x.x`+ (or `v7.x.x`) and NPM `3.x.x`+
 
-## Code scaffolding
+> If you have `nvm` installed, which is highly recommended (`brew install nvm`) you can do a `nvm install --lts && nvm use` in `$` to run with the latest Node LTS. You can also have this `zsh` done for you [automatically](https://github.com/creationix/nvm#calling-nvm-use-automatically-in-a-directory-with-a-nvmrc-file)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Once you have those, you should install these globals with `npm install --global`:
+* `webpack` (`npm install --global webpack`)
+* `webpack-dev-server` (`npm install --global webpack-dev-server`)
+* `karma` (`npm install --global karma-cli`)
+* `protractor` (`npm install --global protractor`)
+* `typescript` (`npm install --global typescript`)
 
-## Build
+## Running the app
+After you have installed all dependencies you can now run the app. Run `npm run server` to start a local server using `webpack-dev-server` which will watch, build (in-memory), and reload for you. The port will be displayed to you as `http://0.0.0.0:3000` (or if you prefer IPv6, if you're using `express` server, then it's `http://[::1]:3000/`).
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+### server
+```bash
+# development
+npm run server
+# production
+npm run build:prod
+npm run server:prod
+```
 
-## Running unit tests
+## Other commands
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### build files
+```bash
+# development
+npm run build:dev
+# production (jit)
+npm run build:prod
+# AoT
+npm run build:aot
+```
 
-## Running end-to-end tests
+### hot module replacement
+```bash
+npm run server:dev:hmr
+```
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### watch and build files
+```bash
+npm run watch
+```
 
-## Further help
+### build Docker
+```bash
+npm run build:docker
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+# Configuration
+Configuration files live in `config/` we are currently using webpack, karma, and protractor for different stages of your application
+
+# AoT Don'ts
+The following are some things that will make AoT compile fail.
+
+- Don’t use require statements for your templates or styles, use styleUrls and templateUrls, the angular2-template-loader plugin will change it to require at build time.
+- Don’t use default exports.
+- Don’t use `form.controls.controlName`, use `form.get(‘controlName’)`
+- Don’t use `control.errors?.someError`, use `control.hasError(‘someError’)`
+- Don’t use functions in your providers, routes or declarations, export a function and then reference that function name
+- @Inputs, @Outputs, View or Content Child(ren), Hostbindings, and any field you use from the template or annotate for Angular should be public
+
+# TypeScript
+> To take full advantage of TypeScript with autocomplete you would have to install it globally and use an editor with the correct TypeScript plugins.
+
+## Use latest TypeScript compiler
+TypeScript 2.1.x includes everything you need. Make sure to upgrade, even if you installed TypeScript previously.
+
+```
+npm install --global typescript
+```
+
+## Use a TypeScript-aware editor
+We have good experience using these editors:
+
+* [Visual Studio Code](https://code.visualstudio.com/)
+* [Webstorm 10](https://www.jetbrains.com/webstorm/download/)
+* [Atom](https://atom.io/) with [TypeScript plugin](https://atom.io/packages/atom-typescript)
+* [Sublime Text](http://www.sublimetext.com/3) with [Typescript-Sublime-Plugin](https://github.com/Microsoft/Typescript-Sublime-plugin#installation)
+
+# Types
+> When you include a module that doesn't include Type Definitions inside of the module you can include external Type Definitions with @types
+
+i.e, to have youtube api support, run this command in terminal:
+```shell
+npm i @types/youtube @types/gapi @types/gapi.youtube
+```
+In some cases where your code editor doesn't support Typescript 2 yet or these types weren't listed in ```tsconfig.json```, add these to **"src/custom-typings.d.ts"** to make peace with the compile check:
+```es6
+import '@types/gapi.youtube';
+import '@types/gapi';
+import '@types/youtube';
+```
+
+## Custom Type Definitions
+When including 3rd party modules you also need to include the type definition for the module
+if they don't provide one within the module. You can try to install it with @types
+
+```
+npm install @types/node
+npm install @types/lodash
+```
+
+If you can't find the type definition in the registry we can make an ambient definition in
+this file for now. For example
+
+```typescript
+declare module "my-module" {
+  export function doesSomething(value: string): string;
+}
+```
+
+
+If you're prototyping and you will fix the types later you can also declare it as type any
+
+```typescript
+declare var assert: any;
+declare var _: any;
+declare var $: any;
+```
+
+If you're importing a module that uses Node.js modules which are CommonJS you need to import as
+
+```typescript
+import * as _ from 'lodash';
+```
+
+
+# Frequently asked questions
+* What's the current browser support for Angular?
+  * Please view the updated list of [browser support for Angular 2](https://github.com/angularclass/awesome-angular2#current-browser-support-for-angular-2)
+* Why is my service, aka provider, is not injecting parameter correctly?
+  * Please use `@Injectable()` for your service for typescript to correctly attach the metadata (this is a TypeScript problem)
+* Where do I write my tests?
+  * You can write your tests next to your component files. See [`/src/app/home/home.component.spec.ts`](/src/app/home/home.component.spec.ts)
+* How do I start the app when I get `EACCES` and `EADDRINUSE` errors?
+  * The `EADDRINUSE` error means the port `3000` is currently being used and `EACCES` is lack of permission for webpack to build files to `./dist/`
+* How to use `sass` for css?
+ *  * `loaders: ['raw-loader','sass-loader']` and `@Component({ styleUrls: ['./filename.scss'] })` see Wiki page [How to include SCSS in components](https://github.com/AngularClass/angular-starter/wiki/How-to-include-SCSS-in-components), or issue [#136](https://github.com/AngularClass/angular-starter/issues/136) for more information.
+* How do I test a Service?  
+  * See issue [#130](https://github.com/AngularClass/angular-starter/issues/130#issuecomment-158872648)
+* How do I add `vscode-chrome-debug` support?
+  * The VS Code chrome debug extension support can be done via `launch.json` see issue [#144](https://github.com/AngularClass/angular-starter/issues/144#issuecomment-164063790)
+* How do I make the repo work in a virtual machine?
+  * You need to use `0.0.0.0` so revert these changes [#205](https://github.com/AngularClass/angular-starter/pull/205/files)
+* What are the naming conventions for Angular?
+  * please see issue [#185](https://github.com/AngularClass/angular-starter/issues/185) and PR [196](https://github.com/AngularClass/angular-starter/pull/196)
+* How do I include bootstrap or jQuery?
+  * please see issue [#215](https://github.com/AngularClass/angular-starter/issues/215) and [#214](https://github.com/AngularClass/angular-starter/issues/214#event-511768416)
+* How do I async load a component?
+  * see wiki [How-do-I-async-load-a-component-with-AsyncRoute](https://github.com/AngularClass/angular-starter/wiki/How-do-I-async-load-a-component-with-AsyncRoute)
+* Error: Cannot find module 'tapable'
+  * Remove `node_modules/` and run `npm cache clean` then `npm install`
+* How do I turn on Hot Module Replacement
+  * Run `npm run server:dev:hmr`
+* `RangeError: Maximum call stack size exceeded`
+  * This is a problem with minifying Angular and it's recent JIT templates. If you set `mangle` to `false` then you should be good.
+* Why is the size of my app larger in development?
+  * We are using inline source-maps and hot module replacement which will increase the bundle size.
+* If you're in China
+  * check out https://github.com/cnpm/cnpm
+* node-pre-gyp ERR in npm install (Windows)
+  * install Python x86 version between 2.5 and 3.0 on windows see issue [#626](https://github.com/AngularClass/angular-starter/issues/626)
+* `Error:Error: Parse tsconfig error [{"messageText":"Unknown compiler option 'lib'.","category":1,"code":5023},{"messageText":"Unknown compiler option 'strictNullChecks'.","category":1,"code":5023},{"messageText":"Unknown compiler option 'baseUrl'.","category":1,"code":5023},{"messageText":"Unknown compiler option 'paths'.","category":1,"code":5023},{"messageText":"Unknown compiler option 'types'.","category":1,"code":5023}]`
+  * remove `node_modules/typescript` and run `npm install typescript@beta`. This repo now uses ts 2.0
+* "There are multiple modules with names that only differ in casing"
+  * change `c:\[path to angular-starter]` to `C:\[path to angular-starter]` see [926#issuecomment-245223547](https://github.com/AngularClass/angular-starter/issues/926#issuecomment-245223547)
+
+# Deployment
+
+## Docker
+
+To run project you only need host machine with **operating system** with installed **git** (to clone this repo)
+and [docker](https://www.docker.com/) and thats all - any other software is not needed
+(other software like node.js etc. will be automatically downloaded and installed inside docker container during build step based on dockerfile).
+
+### Install docker
+
+#### MacOS:
+
+`brew cask install docker`
+
+And run docker by Mac bottom menu> launchpad > docker (on first run docker will ask you about password)
+
+#### Ubuntu:
+
+```
+sudo apt-get update
+sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+sudo apt-add-repository 'deb https://apt.dockerproject.org/repo ubuntu-xenial main'
+sudo apt-get update
+apt-cache policy docker-engine
+sudo apt-get install -y docker-engine
+sudo systemctl status docker  # test:  shoud be ‘active’
+```
+And add your user to docker group (to avoid `sudo` before using `docker` command in future):
+```
+sudo usermod -aG docker $(whoami)
+```
+and logout and login again.
+
+### Build image
+
+Because *node.js* is big memory consumer you need 1-2GB RAM or virtual memory to build docker image
+(it was successfully tested on machine with 512MB RAM + 2GB virtual memory - building process take 7min)
+
+Go to main project folder. To build big (~280MB) image which has cached data and is able to **FAST** rebuild  
+(this is good for testing or staging environment) type:
+
+`docker build -t angular-starter .`
+
+To build **SMALL** (~20MB) image without cache (so each rebuild will take the same amount of time as first build)
+(this is good for production environment) type:
+
+`docker build --squash="true" -t angular-starter .`
+
+The **angular-starter** name used in above commands is only example image name.
+To remove intermediate images created by docker on build process, type:
+
+`docker rmi -f $(docker images -f "dangling=true" -q)`
+
+### Run image
+
+To run created docker image on [localhost:8080](localhost:8080) type (parameter `-p 8080:80` is host:container port mapping)
+
+`docker run --name angular-starter -p 8080:80 angular-starter &`
+
+And that's all, you can open browser and go to [localhost:8080](localhost:8080).
+
+### Run image on sub-domain
+
+If you want to run image as virtual-host on sub-domain you must setup [proxy](https://github.com/jwilder/nginx-proxy)
+. You should install proxy and set sub-domain in this way:
+
+ ```
+ docker pull jwilder/nginx-proxy:alpine
+ docker run -d -p 80:80 --name nginx-proxy -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy:alpine
+ ```
+
+ And in your `/etc/hosts` file (linux) add line: `127.0.0.1 angular-starter.your-domain.com` or in yor hosting add
+ folowing DNS record (wildchar `*` is handy because when you add new sub-domain in future, you don't need to touch/add any DNS record)
+
+ ```
+ Type: CNAME
+ Hostname: *.your-domain.com
+ Direct to: your-domain.com
+ TTL(sec): 43200
+ ```
+
+And now you are ready to run image on subdomain by:
+
+```
+docker run -e VIRTUAL_HOST=angular-starter.your-domain.com --name angular-starter angular-starter &
+```
+
+### Login into docker container
+
+`docker exec -t -i angular-starter /bin/bash`
+
+# License
+ [MIT](/LICENSE)

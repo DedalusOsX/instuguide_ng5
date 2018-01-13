@@ -1,0 +1,133 @@
+// -----------------------------------------------------------------------------
+// This file contains all colors
+// -----------------------------------------------------------------------------
+
+////
+/// This is a group comment will create a new sidebar item in sassdoc.
+/// @group Colors
+////
+
+/// Slightly lighten a color
+/// @param {Color} $color - color to tint
+/// @param {Number} $percentage [0.8] - percentage of `$color` in returned color
+/// @return {Color}
+@function tint($color, $percentage: 0.8) {
+    $percent: $percentage*100%;
+    @return mix(white, $color, $percent);
+}
+
+/// Slightly darken a color
+/// @param {Color} $color - color to shade
+/// @param {Number} $percentage [0.8] - percentage of `$color` in returned color
+/// @return {Color}
+@function shade($color, $percentage: 0.8) {
+    $percent: $percentage*100%;
+    @return mix(black, $color, $percent);
+}
+
+/// This is a linear gradient color mixin for the borders
+/// @param {String} $color1 - start color
+/// @param {String} $color2 - end color
+/// @param {Number} $degree [68] - linear gradient angle
+/// @example @include border-linear-gradient(#fff, #000, 48);
+/// @example @include border-linear-gradient(#fff, #000);
+@mixin border-linear-gradient($color1, $color2, $degree: 68) {
+    $degreeString       : $degree + deg;
+    -moz-border-image   : -moz-linear-gradient($degreeString, $color1, $color2);
+    -webkit-border-image: -webkit-linear-gradient($degreeString, $color1, $color2);
+    border-image        : linear-gradient($degreeString, $color1, $color2);
+    border-image-slice  : 1;
+}
+
+/// This is a linear gradient color mixin for the backgrounds
+/// @param {String} $color1 - start color
+/// @param {String} $color2 - end color
+/// @param {Number} $degree [68] - linear gradient angle
+/// @example @include background-linear-gradient(#fff, #000, 48);
+/// @example @include background-linear-gradient(#fff, #000);
+@mixin background-linear-gradient($color1, $color2, $degree: 68) {
+    $degreeString: $degree + deg;
+    background   : -moz-linear-gradient($degreeString, $color1, $color2);
+    /* FF3.6+ */
+    background   : -webkit-gradient(linear, $degreeString, $color1, $color2);
+    /* Chrome, Safari4+ */
+    background   : -webkit-linear-gradient($degreeString, $color1, $color2);
+    /* Chrome10+,Safari5.1+ */
+    background   : -o-linear-gradient($degreeString, $color1, $color2);
+    /* Opera 11.10+ */
+    background   : -ms-linear-gradient($degreeString, $color1, $color2);
+    /* IE10+ */
+}
+
+/// White color
+/// @type Color
+$white: #ffffff;
+
+/// Black color
+/// @type Color
+$black: #000000;
+
+/// Blue color
+/// @type Color
+$blue: #4d9de0;
+
+/// Light-blue color
+/// @type Color
+$blue-light: #00BCF9;
+
+/// Green color
+/// @type Color
+$green: #1ecd97;
+
+/// Yellow color
+/// @type Color
+$yellow: #FAC63F;
+
+/// Red color
+/// @type Color
+$red: #ff3f46;
+
+/// Purple color
+/// @type Color
+$purple: #4f3681;
+
+/// Gray color
+/// @type Color
+$gray: #B0B2B4;
+
+/// Primary text color
+/// @type Color
+$primary: shade($gray, 0.5);
+
+/// This is a color map that is used in various components
+/// @type Map
+/// @prop {Color} black[$black]
+/// @prop {Color} gray[$gray]
+/// @prop {Color} blue[$blue]
+/// @prop {Color} blue-light[$blue-light]
+/// @prop {Color} green[$green]
+/// @prop {Color} red[$red]
+/// @prop {Color} yellow[$yellow]
+$colors-map: (
+    purple    : $purple,
+    blue      : $blue,
+    blue-light: $blue-light,
+    green     : $green,
+    red       : $red,
+    yellow    : $yellow,
+    black     : $black
+);
+
+/// This is a color map that is used for status visualizing elements
+/// @type Map
+/// @prop {Color} completed[$green]
+/// @prop {Color} pending[$blue]
+/// @prop {Color} locked[$black]
+
+$status-map: (
+    completed: $green,
+    unlocked: $green,
+    pending: $blue,
+    locked: $black,
+);
+

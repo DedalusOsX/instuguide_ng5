@@ -1,0 +1,107 @@
+assignment {
+    position: relative;
+
+    .b-assignment {
+        &__status {
+            text-align: center;
+            cursor    : pointer;
+            align-self: center;
+
+            button,
+            p {
+                margin-top: 10px;
+            }
+        }
+
+        &__grade-titles,
+        &__view-titles {
+            h3 {
+                text-transform: capitalize;
+                white-space   : pre-wrap;
+            }
+
+            > div {
+                align-self: center;
+                text-align: right;
+
+                i {
+                    text-align: center;
+                }
+            }
+
+            > p {
+                margin-bottom: 35px;
+            }
+
+            instu-input {
+                margin: 0;
+            }
+        }
+
+        &__grade-student {
+            margin-top: auto;
+        }
+    }
+
+    form {
+        h3 {
+            text-transform: capitalize;
+            white-space   : pre-wrap;
+        }
+
+        instu-input,
+        instu-textarea {
+            margin: 0 !important;
+        }
+    }
+
+    .highcharts-tooltip {
+        span {
+            text-align : left !important;
+            font-size  : 18px !important;
+            font-family: Lato !important;
+            width      : 160px !important;
+            font-weight: 300 !important;
+
+            b {
+                font-weight: 300 !important;
+            }
+        }
+    }
+
+    .highcharts-title {
+        tspan {
+            font-size  : 18px !important;
+            font-family: Lato !important;
+            font-weight: 700 !important;
+        }
+    }
+
+    .highcharts-legend-item {
+        rect {
+            rx    : 0;
+            ry    : 0;
+            width : 14px;
+            height: 14px;
+            x     : 0;
+            y     : 3;
+        }
+
+        tspan {
+            font-family: Lato !important;
+            font-size  : 13px !important;
+            font-weight: 300 !important;
+
+            &:last-child {
+                font-weight: 700 !important;
+            }
+        }
+    }
+
+    .grade-bar__container {
+        p {
+            font-size  : 18px;
+            font-weight: 700;
+        }
+    }
+}

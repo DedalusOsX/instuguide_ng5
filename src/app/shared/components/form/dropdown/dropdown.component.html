@@ -1,0 +1,8 @@
+<instu-input (onFocus)='opened = true' (onBlur)="opened = false"
+             [label]='label' [value]='selected' readonly='true' required='true'>
+</instu-input>
+<ul [class.active]='opened'>
+  <li *ngFor='let value of iterable; let i = index; trackBy: trackByFn' (mousedown)='setValue(i)' class='text-capitalize'
+      [ngClass]='{active: selected === value}'>{{ value }}
+  </li>
+</ul>
